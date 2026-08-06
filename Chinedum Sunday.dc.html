@@ -3,6 +3,28 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Chinedum Sunday — Data Engineer</title>
+<meta name="description" content="Data engineer in Abuja, working remote. I build and maintain pipelines that run unattended — Python, SQL, Airflow, dbt, BigQuery.">
+<link rel="canonical" href="https://chinedumsunday.com/">
+
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+
+<meta property="og:title" content="Chinedum Sunday — Data Engineer">
+<meta property="og:description" content="Data engineer in Abuja, working remote. I build and maintain pipelines that run unattended — Python, SQL, Airflow, dbt, BigQuery.">
+<meta property="og:url" content="https://chinedumsunday.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Chinedum Sunday">
+<!-- No OG image exists yet. Drop a 1200x630 image at /uploads/og-image.jpg and uncomment both lines below. -->
+<!-- <meta property="og:image" content="https://chinedumsunday.com/uploads/og-image.jpg"> -->
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Chinedum Sunday — Data Engineer">
+<meta name="twitter:description" content="Data engineer in Abuja, working remote. I build and maintain pipelines that run unattended — Python, SQL, Airflow, dbt, BigQuery.">
+<meta name="twitter:creator" content="@chinedum_e_s">
+<!-- <meta name="twitter:image" content="https://chinedumsunday.com/uploads/og-image.jpg"> -->
+
 <script src="./support.js"></script>
 </head>
 <body>
@@ -58,13 +80,13 @@
         <a data-wipe="1" href="#contact" style="color:#8B8C64">Contact</a>
       </div>
       <div style="display:flex;align-items:center;gap:24px">
-        <span style="letter-spacing:0.1em;white-space:nowrap">{{ clock }} WAT</span>
-        <a href="uploads/Chinedum_Sunday_CV_Data_Engineer_Master.pdf" download="" style="color:#F2F2F2;border:1px solid rgba(255,255,255,0.14);padding:7px 12px" style-hover="color:#BDF26D;border-color:#BDF26D">CV &darr;</a>
+        <span ref="{{ clockWide }}" style="letter-spacing:0.1em;white-space:nowrap">WAT</span>
+        <a href="uploads/Chinedum_Sunday_Data_Engineer_CV.pdf" download="" style="color:#F2F2F2;border:1px solid rgba(255,255,255,0.14);padding:7px 12px" style-hover="color:#BDF26D;border-color:#BDF26D">CV &darr;</a>
       </div>
     </sc-if>
     <sc-if value="{{ narrow }}" hint-placeholder-val="{{ false }}">
       <div style="display:flex;align-items:center;gap:16px">
-        <span style="letter-spacing:0.1em;white-space:nowrap">{{ clock }}</span>
+        <span ref="{{ clockNarrow }}" style="letter-spacing:0.1em;white-space:nowrap">WAT</span>
         <button type="button" onClick="{{ toggleMenu }}" style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#F2F2F2;background:none;border:1px solid rgba(255,255,255,0.14);padding:7px 12px;cursor:pointer">Menu</button>
       </div>
     </sc-if>
@@ -74,7 +96,7 @@
       <a href="#work" onClick="{{ toggleMenu }}">Work</a>
       <a href="#about" onClick="{{ toggleMenu }}">About</a>
       <a href="#contact" onClick="{{ toggleMenu }}">Contact</a>
-      <a href="uploads/Chinedum_Sunday_CV_Data_Engineer_Master.pdf" download="" style="color:#BDF26D">CV &darr;</a>
+      <a href="uploads/Chinedum_Sunday_Data_Engineer_CV.pdf" download="" style="color:#BDF26D">CV &darr;</a>
     </div>
   </sc-if>
 
@@ -158,7 +180,7 @@
         <a data-wipe="1" href="#contact" style="color:#8B8C64;padding-bottom:6px">Get in touch</a>
         <button type="button" onClick="{{ rerun }}" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8B8C64;background:none;border:1px solid rgba(255,255,255,0.14);padding:9px 14px;cursor:pointer;transition:color 200ms ease-out,border-color 200ms ease-out" style-hover="color:#BDF26D;border-color:#BDF26D">&#8635; Trigger the run</button>
         <sc-if value="{{ runNote }}" hint-placeholder-val="{{ false }}">
-          <span data-note="1" style="animation:noteIn 240ms ease-out both;color:#BDF26D;letter-spacing:0.16em">{{ runNote }}</span>
+          <span data-note="1" ref="{{ noteRef }}" style="animation:noteIn 240ms ease-out both;color:#BDF26D;letter-spacing:0.16em"></span>
         </sc-if>
       </div>
     </div>
@@ -300,7 +322,7 @@
           <div style="font-family:'JetBrains Mono',monospace;font-size:9px;line-height:1.6;letter-spacing:0.14em;text-transform:uppercase;color:#8B8C64;margin-top:-8px">Detection-to-publish latency &middot; tight sub-minute mode &middot; bursty market hours</div>
         </div>
         <div style="display:flex;flex-direction:column;gap:28px;justify-content:space-between">
-          <p style="margin:0;color:#8B8C64;font-size:16px;line-height:1.65;max-width:60ch">An independent side project running on a single AWS EC2 box: RSS and API monitors poll for market movement, an LLM classifies and drafts, systemd keeps the whole thing alive. Detection to published post lands between 10 seconds and a minute, with no human in the loop.</p>
+          <p style="margin:0;color:#8B8C64;font-size:16px;line-height:1.65;max-width:60ch">An independent side project running on a single AWS EC2 box: RSS and API monitors poll for market movement, an LLM classifies and drafts, systemd keeps the whole thing alive. Detection to published post lands between 10 seconds and a minute, fully automated end-to-end.</p>
           <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:#8B8C64;text-transform:uppercase">
             <span style="border:1px solid rgba(255,255,255,0.1);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:rgba(255,255,255,0.32)">Python</span>
             <span style="border:1px solid rgba(255,255,255,0.1);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:rgba(255,255,255,0.32)">AWS EC2</span>
@@ -480,7 +502,7 @@
       <div style="margin-top:64px;display:flex;flex-direction:column;gap:32px">
         <a href="mailto:chinedumsunday5@gmail.com" style="font-size:clamp(20px,2.6vw,38px);letter-spacing:-0.02em;color:#BDF26D;width:fit-content;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:8px;transition:border-color 200ms ease-out" style-hover="border-bottom-color:#BDF26D">chinedumsunday5@gmail.com</a>
         <div style="display:flex;flex-wrap:wrap;gap:16px 40px;align-items:center;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8B8C64">
-          <a href="uploads/Chinedum_Sunday_CV_Data_Engineer_Master.pdf" download="" style="color:#F2F2F2;border:1px solid rgba(255,255,255,0.14);padding:10px 16px;transition:color 200ms ease-out,border-color 200ms ease-out" style-hover="color:#BDF26D;border-color:#BDF26D">Download CV &darr;</a>
+          <a href="uploads/Chinedum_Sunday_Data_Engineer_CV.pdf" download="" style="color:#F2F2F2;border:1px solid rgba(255,255,255,0.14);padding:10px 16px;transition:color 200ms ease-out,border-color 200ms ease-out" style-hover="color:#BDF26D;border-color:#BDF26D">Download CV &darr;</a>
           <a data-wipe="1" href="tel:+2349127966144" style="color:#8B8C64">+234 912 796 6144</a>
           <a data-wipe="1" href="https://github.com/chinedumsunday" style="color:#8B8C64">GitHub</a>
           <a data-wipe="1" href="https://www.linkedin.com/in/chinedumsunday/" style="color:#8B8C64">LinkedIn</a>
@@ -493,7 +515,7 @@
   <footer style="position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.08);padding:32px 5vw;display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#8B8C64">
     <span>Chinedum Sunday</span>
     <span>Open to remote data engineering roles &middot; Abuja, WAT (UTC+1)</span>
-    <span>&copy; 26</span>
+    <span ref="{{ yearRef }}">&copy; 2026</span>
   </footer>
 </div>
 </x-dc>
@@ -503,13 +525,18 @@ const AMBER = "#E5A94B", GREEN = "#BDF26D", GREEN_FILL = "#3B4A22", RED = "#C250
 const EDGE_BASE = "#3A2A25", EDGE_LIVE = "#8A7060";
 
 class Component extends DCLogic {
-  state = { clock: "--:--:--", wide: true, narrow: false, menuOpen: false, runNote: "" };
+  state = { wide: true, narrow: false, menuOpen: false, runNote: "" };
 
   constructor(props) {
     super(props);
     this.dagWrap = React.createRef();
     this.progress = React.createRef();
     this.tip = React.createRef();
+    this.clockWide = React.createRef();
+    this.clockNarrow = React.createRef();
+    this.noteRef = React.createRef();
+    this.yearRef = React.createRef();
+    this.clockText = "";
     this.surface = React.createRef();
     this.surfaceNews = React.createRef();
     this.surfaceTel = React.createRef();
@@ -525,7 +552,6 @@ class Component extends DCLogic {
   renderVals() {
     const n = this.state.narrow;
     return {
-      clock: this.state.clock,
       wide: this.state.wide,
       narrow: n,
       menuOpen: this.state.menuOpen,
@@ -540,6 +566,10 @@ class Component extends DCLogic {
       dagWrap: this.dagWrap,
       progress: this.progress,
       tip: this.tip,
+      clockWide: this.clockWide,
+      clockNarrow: this.clockNarrow,
+      noteRef: this.noteRef,
+      yearRef: this.yearRef,
       surface: this.surface,
       surfaceNews: this.surfaceNews,
       surfaceTel: this.surfaceTel,
@@ -551,6 +581,7 @@ class Component extends DCLogic {
 
   componentDidMount() {
     this.tick();
+    this.paintYear();
     this.timer = setInterval(() => this.tick(), 1000);
     this.mq = window.matchMedia("(max-width: 760px)");
     this.syncMq = () => this.setState({ wide: !this.mq.matches, narrow: this.mq.matches, menuOpen: false });
@@ -587,6 +618,12 @@ class Component extends DCLogic {
     else this.pending.push(setTimeout(() => this.runDag(), 700));
   }
 
+  componentDidUpdate() {
+    this.paintClock();
+    this.paintNote();
+    this.paintYear();
+  }
+
   componentWillUnmount() {
     clearInterval(this.timer);
     if (this.mq) this.mq.removeEventListener("change", this.syncMq);
@@ -598,11 +635,30 @@ class Component extends DCLogic {
   }
 
   tick() {
-    this.setState({
-      clock: new Intl.DateTimeFormat("en-GB", {
-        timeZone: "Africa/Lagos", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false
-      }).format(new Date())
-    });
+    this.clockText = new Intl.DateTimeFormat("en-GB", {
+      timeZone: "Africa/Lagos", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false
+    }).format(new Date());
+    this.paintClock();
+  }
+
+  // Clock, run note and year are written through refs rather than {{ }} bindings
+  // so the served HTML carries readable fallbacks instead of raw braces for
+  // crawlers and link-preview bots, which never run the runtime.
+  paintClock() {
+    const w = this.clockWide.current;
+    if (w) w.textContent = this.clockText + " WAT";
+    const n = this.clockNarrow.current;
+    if (n) n.textContent = this.clockText;
+  }
+
+  paintNote() {
+    const n = this.noteRef.current;
+    if (n) n.textContent = this.state.runNote;
+  }
+
+  paintYear() {
+    const y = this.yearRef.current;
+    if (y) y.textContent = "© " + new Date().getFullYear();
   }
 
   scrollUI() {
