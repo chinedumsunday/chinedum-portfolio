@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script src="./image-slot.js"></script>
+<style>
+  html { scroll-behavior: smooth; }
+  html, body { margin: 0; padding: 0; background: #0F0D0C; }
+  * { box-sizing: border-box; }
+  ::selection { background: #BDF26D; color: #0F0D0C; }
+  a { color: #F2F2F2; text-decoration: none; }
+  a:hover { color: #BDF26D; }
+  a[data-wipe] { position: relative; }
+  a[data-wipe]::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: -5px; height: 1px;
+    background: #BDF26D; transform: scaleX(0); transform-origin: left center;
+    transition: transform 180ms ease-out;
+  }
+  a[data-wipe]:hover::after { transform: scaleX(1); }
+  @keyframes heroLine { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+  @keyframes nodePulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+  @keyframes noteIn { from { opacity: 0; } to { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    [data-hero] { animation: none !important; opacity: 1 !important; transform: none !important; }
+    [data-note] { animation: none !important; }
+  }
+</style>
+</helmet>
+<div style="position:relative;background:#0F0D0C;color:#F2F2F2;font-family:'Archivo',Helvetica,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden">
+
+  <div style="position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(120% 90% at 50% 38%, #161312 0%, #0F0D0C 55%, #0A0908 100%)"></div>
+  <div style="position:fixed;inset:0;z-index:0;pointer-events:none;background-image:radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);background-size:64px 64px;background-position:center"></div>
+  <svg style="position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.03" aria-hidden="true">
+    <filter id="filmgrain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"></feTurbulence>
+      <feColorMatrix type="saturate" values="0"></feColorMatrix>
+    </filter>
+    <rect width="100%" height="100%" filter="url(#filmgrain)"></rect>
+  </svg>
+
+  <nav style="position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:14px 5vw;border-bottom:1px solid rgba(255,255,255,0.08);background:rgba(15,13,12,0.78);backdrop-filter:blur(10px);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#8B8C64">
+    <div ref="{{ progress }}" style="position:absolute;left:0;bottom:-1px;height:1px;width:100%;background:#BDF26D;opacity:0.7;transform:scaleX(0);transform-origin:left center"></div>
+    <a href="#top" style="color:#F2F2F2">Chinedum Sunday</a>
+    <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;gap:28px">
+        <a data-wipe="1" href="#work" style="color:#8B8C64">Work</a>
+        <a data-wipe="1" href="#about" style="color:#8B8C64">About</a>
+        <a data-wipe="1" href="#contact" style="color:#8B8C64">Contact</a>
+      </div>
+      <div style="display:flex;align-items:center;gap:24px">
+        <span style="letter-spacing:0.1em;white-space:nowrap">{{ clock }} WAT</span>
+        <a href="uploads/Chinedum_Sunday_CV_Data_Engineer_Master.pdf" download="" style="color:#F2F2F2;border:1px solid rgba(255,255,255,0.14);padding:7px 12px" style-hover="color:#BDF26D;border-color:#BDF26D">CV &darr;</a>
+      </div>
+    </sc-if>
+    <sc-if value="{{ narrow }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;align-items:center;gap:16px">
+        <span style="letter-spacing:0.1em;white-space:nowrap">{{ clock }}</span>
+        <button type="button" onClick="{{ toggleMenu }}" style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#F2F2F2;background:none;border:1px solid rgba(255,255,255,0.14);padding:7px 12px;cursor:pointer">Menu</button>
+      </div>
+    </sc-if>
+  </nav>
+  <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:sticky;top:47px;z-index:19;display:flex;flex-direction:column;gap:18px;padding:22px 5vw;border-bottom:1px solid rgba(255,255,255,0.08);background:rgba(15,13,12,0.96);font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase">
+      <a href="#work" onClick="{{ toggleMenu }}">Work</a>
+      <a href="#about" onClick="{{ toggleMenu }}">About</a>
+      <a href="#contact" onClick="{{ toggleMenu }}">Contact</a>
+      <a href="uploads/Chinedum_Sunday_CV_Data_Engineer_Master.pdf" download="" style="color:#BDF26D">CV &darr;</a>
+    </div>
+  </sc-if>
+
+  <header id="top" style="position:relative;z-index:1;min-height:{{ heroH }};display:flex;flex-direction:column;padding:0 5vw {{ heroPadB }}">
+    <div style="position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;opacity:0.14">
+      <svg ref="{{ heroSurface }}" viewBox="-90 -55 180 110" preserveAspectRatio="xMidYMid slice" style="position:absolute;left:-50%;right:-50%;top:-35%;bottom:-35%;width:200%;height:170%;display:block" aria-hidden="true"></svg>
+    </div>
+    <div style="position:relative;height:{{ dagH }};flex:0 0 auto" ref="{{ dagWrap }}">
+      <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+        <svg viewBox="0 0 1200 320" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;display:block;overflow:visible">
+          <g fill="none" stroke="#3A2A25" stroke-width="1.2" opacity="0.5">
+            <path data-edge="0" d="M120,90 C255,90 255,60 390,60" />
+            <path data-edge="1" d="M120,90 C255,90 255,145 390,145" />
+            <path data-edge="2" d="M120,200 C255,200 255,145 390,145" />
+            <path data-edge="3" d="M120,200 C255,200 255,230 390,230" />
+            <path data-edge="4" d="M390,60 C525,60 525,100 660,100" />
+            <path data-edge="5" d="M390,145 C525,145 525,100 660,100" />
+            <path data-edge="6" d="M390,145 C525,145 525,200 660,200" />
+            <path data-edge="7" d="M390,230 C525,230 525,200 660,200" />
+            <path data-edge="8" d="M660,100 C780,100 780,100 900,100" />
+            <path data-edge="9" d="M660,200 C780,200 780,200 900,200" />
+            <path data-edge="10" d="M900,100 C995,100 995,150 1090,150" />
+            <path data-edge="11" d="M900,200 C995,200 995,150 1090,150" />
+          </g>
+          <g fill="none" stroke="#5A4A44" stroke-width="1.6" opacity="0.55">
+            <circle data-node="0" data-stage="EXTRACT" cx="120" cy="90" r="10" style="cursor:default;transition:transform 200ms ease-out" />
+            <circle data-node="1" data-stage="EXTRACT" cx="120" cy="200" r="10" style="cursor:default;transition:transform 200ms ease-out" />
+            <circle data-node="2" data-stage="STAGE" cx="390" cy="60" r="10" style="cursor:default;transition:transform 200ms ease-out" />
+            <circle data-node="3" data-stage="STAGE" cx="390" cy="145" r="10" style="cursor:default;transition:transform 200ms ease-out" />
+            <circle data-node="4" data-stage="STAGE" cx="390" cy="230" r="10" style="cursor:default;transition:transform 200ms ease-out" />
+            <circle data-node="5" data-stage="TRANSFORM" cx="660" cy="100" r="10" style="cursor:default;transition:transform 200ms ease-out" />
+            <circle data-node="6" data-stage="TRANSFORM" cx="660" cy="200" r="10" style="cursor:default;transition:transform 200ms ease-out" />
+            <circle data-node="7" data-stage="TEST" cx="900" cy="100" r="10" style="cursor:default;transition:transform 200ms ease-out" />
+            <circle data-node="8" data-stage="TEST" cx="900" cy="200" r="10" style="cursor:default;transition:transform 200ms ease-out" />
+            <circle data-node="9" data-stage="LOAD" cx="1090" cy="150" r="10" style="cursor:default;transition:transform 200ms ease-out" />
+          </g>
+          <g fill="#8B8C64" font-family="JetBrains Mono, monospace" font-size="16" letter-spacing="2.2" text-anchor="middle">
+            <text x="120" y="300">EXTRACT</text>
+            <text x="390" y="300">STAGE</text>
+            <text x="660" y="300">TRANSFORM</text>
+            <text x="900" y="300">TEST</text>
+            <text x="1090" y="300">LOAD</text>
+          </g>
+        </svg>
+      </sc-if>
+      <sc-if value="{{ narrow }}" hint-placeholder-val="{{ false }}">
+        <svg viewBox="0 0 260 96" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;display:block">
+          <g fill="none" stroke="#3A2A25" stroke-width="1.2" opacity="0.5">
+            <path data-edge="0" d="M20,30 L75,30" />
+            <path data-edge="1" d="M75,30 L130,30" />
+            <path data-edge="2" d="M130,30 L185,30" />
+            <path data-edge="3" d="M185,30 L240,30" />
+          </g>
+          <g fill="none" stroke="#5A4A44" stroke-width="1.4" opacity="0.55">
+            <circle data-node="0" data-stage="EXTRACT" cx="20" cy="30" r="6" />
+            <circle data-node="1" data-stage="STAGE" cx="75" cy="30" r="6" />
+            <circle data-node="2" data-stage="TRANSFORM" cx="130" cy="30" r="6" />
+            <circle data-node="3" data-stage="TEST" cx="185" cy="30" r="6" />
+            <circle data-node="4" data-stage="LOAD" cx="240" cy="30" r="6" />
+          </g>
+          <g fill="#8B8C64" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="0.4" text-anchor="middle">
+            <text x="20" y="62">EXTRACT</text>
+            <text x="75" y="62">STAGE</text>
+            <text x="130" y="62">MODEL</text>
+            <text x="185" y="62">TEST</text>
+            <text x="240" y="62">LOAD</text>
+          </g>
+        </svg>
+      </sc-if>
+      <div ref="{{ tip }}" style="position:absolute;left:0;top:0;opacity:0;pointer-events:none;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#0F0D0C;background:#BDF26D;padding:4px 7px;white-space:nowrap;transition:opacity 160ms ease-out"></div>
+    </div>
+
+    <div style="position:relative;z-index:2;display:flex;flex-direction:column;gap:{{ heroGap }};margin-top:{{ heroGap }}">
+      <h1 style="margin:0;font-size:clamp(44px,7.6vw,140px);line-height:0.94;font-weight:900;letter-spacing:-0.04em;max-width:19ch;text-wrap:balance">
+        <span data-hero="1" style="display:block;animation:heroLine 500ms ease-out 0ms both">I build pipelines</span>
+        <span data-hero="2" style="display:block;animation:heroLine 500ms ease-out 80ms both">that run when</span>
+        <span data-hero="3" style="display:block;animation:heroLine 500ms ease-out 160ms both">nobody&rsquo;s watching.</span>
+      </h1>
+      <div data-hero="4" style="animation:heroLine 500ms ease-out 240ms both;display:flex;flex-wrap:wrap;gap:14px 32px;align-items:center;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.16em;text-transform:uppercase">
+        <a data-wipe="1" href="#work" style="border-bottom:1px solid rgba(255,255,255,0.14);padding-bottom:6px">See the work &darr;</a>
+        <a data-wipe="1" href="#contact" style="color:#8B8C64;padding-bottom:6px">Get in touch</a>
+        <button type="button" onClick="{{ rerun }}" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8B8C64;background:none;border:1px solid rgba(255,255,255,0.14);padding:9px 14px;cursor:pointer;transition:color 200ms ease-out,border-color 200ms ease-out" style-hover="color:#BDF26D;border-color:#BDF26D">&#8635; Trigger the run</button>
+        <sc-if value="{{ runNote }}" hint-placeholder-val="{{ false }}">
+          <span data-note="1" style="animation:noteIn 240ms ease-out both;color:#BDF26D;letter-spacing:0.16em">{{ runNote }}</span>
+        </sc-if>
+      </div>
+    </div>
+  </header>
+
+  <section style="position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.08);padding:90px 5vw">
+    <div data-stagger="60" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,max(180px,18%)),1fr));gap:36px 24px">
+      <div data-reveal="1">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.2em;color:#8B8C64;text-transform:uppercase">Based</div>
+        <div style="font-size:16px;margin-top:12px">Abuja, NG</div>
+      </div>
+      <div data-reveal="1">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.2em;color:#8B8C64;text-transform:uppercase">Mode</div>
+        <div style="font-size:16px;margin-top:12px">Remote &middot; International</div>
+      </div>
+      <div data-reveal="1">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.2em;color:#8B8C64;text-transform:uppercase">Stack</div>
+        <div style="font-size:16px;margin-top:12px;line-height:1.5">Python &middot; SQL &middot; Airflow<br />dbt &middot; BigQuery</div>
+      </div>
+      <div data-reveal="1">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.2em;color:#8B8C64;text-transform:uppercase">Cloud</div>
+        <div style="font-size:16px;margin-top:12px">GCP &middot; AWS</div>
+      </div>
+      <div data-reveal="1">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.2em;color:#8B8C64;text-transform:uppercase">Status</div>
+        <div style="font-size:16px;margin-top:12px;color:#BDF26D">Open to remote roles</div>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="Proof" style="position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.08);padding:90px 5vw">
+    <div style="display:grid;grid-template-columns:{{ proofCols }};gap:48px;align-items:center">
+      <div data-reveal="1">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;color:#8B8C64;text-transform:uppercase">(01) &nbsp; Proof, not adjectives</div>
+        <h2 style="margin:24px 0 0;font-size:clamp(30px,4.4vw,64px);line-height:1.0;font-weight:800;letter-spacing:-0.032em;max-width:22ch">Most pipelines run.<br />Fewer are trusted.</h2>
+      </div>
+      <div data-reveal="1" style="display:flex;justify-content:center;align-items:center;height:280px;perspective:1100px;perspective-origin:50% 50%">
+        <div style="position:relative;width:230px;height:160px;transform-style:preserve-3d;transform:rotateX(60deg) rotateZ(-25deg)">
+          <div style="position:absolute;inset:0;transform:translateZ(76px);border:1px solid rgba(189,242,109,0.55);background:rgba(189,242,109,0.05)"></div>
+          <div style="position:absolute;left:12px;top:76px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;color:#BDF26D;transform:translateZ(76px)">MARTS</div>
+          <div style="position:absolute;inset:0;transform:translateZ(18px);border:1px solid rgba(255,255,255,0.16);background:rgba(255,255,255,0.02)"></div>
+          <div style="position:absolute;left:12px;top:76px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;color:#8B8C64;transform:translateZ(18px)">STAGING</div>
+          <div style="position:absolute;inset:0;transform:translateZ(-40px);border:1px solid rgba(255,255,255,0.1)"></div>
+          <div style="position:absolute;left:12px;top:76px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;color:#8B8C64;transform:translateZ(-40px)">RAW</div>
+        </div>
+      </div>
+    </div>
+    <div data-stagger="80" style="margin-top:64px;display:grid;grid-template-columns:{{ metricCols }}">
+      <div data-reveal="1" style="padding:0 24px 0 0">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:clamp(26px,3.4vw,72px);letter-spacing:-0.04em;line-height:1;white-space:nowrap" data-count="10" data-suffix="S&ndash;1M">10S&ndash;1M</div>
+        <div style="margin-top:24px;color:#8B8C64;font-size:14px;line-height:1.5;max-width:26ch">Detection to published post, live news pipeline</div>
+      </div>
+      <div data-reveal="1" style="padding:0 24px;border-left:1px solid rgba(255,255,255,0.08)">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:clamp(40px,6vw,88px);letter-spacing:-0.04em;line-height:1;white-space:nowrap" data-count="101" data-suffix="K">101K</div>
+        <div style="margin-top:24px;color:#8B8C64;font-size:14px;line-height:1.5;max-width:26ch">Records through idempotent BigQuery MERGE loads</div>
+      </div>
+      <div data-reveal="1" style="padding:0 24px;border-left:1px solid rgba(255,255,255,0.08)">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:clamp(40px,6vw,88px);letter-spacing:-0.04em;line-height:1;white-space:nowrap" data-count="30" data-suffix="K">30K</div>
+        <div style="margin-top:24px;color:#8B8C64;font-size:14px;line-height:1.5;max-width:26ch">Synthetic transactions, corridor-weighted, log-normal</div>
+      </div>
+      <div data-reveal="1" style="padding:0 24px;border-left:1px solid rgba(255,255,255,0.08)">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:clamp(26px,3.4vw,72px);letter-spacing:-0.04em;line-height:1;white-space:nowrap" data-count="24" data-suffix=" TASKS">24 TASKS</div>
+        <div style="margin-top:24px;color:#8B8C64;font-size:14px;line-height:1.5;max-width:26ch">Single orchestrated DAG, production Airflow</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="work" data-screen-label="Selected work" style="position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.08);padding:90px 5vw">
+    <div data-reveal="1">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;color:#8B8C64;text-transform:uppercase">(02) &nbsp; Selected work</div>
+      <h2 style="margin:24px 0 0;font-size:clamp(30px,4.4vw,64px);line-height:1.0;font-weight:800;letter-spacing:-0.032em;max-width:22ch">Anyone can move data.<br />The job is moving it on time.</h2>
+    </div>
+
+    <div data-stagger="100" style="margin-top:64px;display:flex;flex-direction:column">
+      <article data-reveal="1" data-card="1" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,max(260px,28%)),1fr));gap:40px;border-top:1px solid rgba(255,255,255,0.08);border-left:2px solid transparent;padding:56px 0 56px 24px;transition:background 200ms ease-out,border-left-color 200ms ease-out" style-hover="background:#14100E;border-left-color:#BDF26D">
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:#8B8C64">01</div>
+          <h3 style="margin:0;font-size:clamp(26px,2.8vw,40px);line-height:1.05;font-weight:800;letter-spacing:-0.028em;color:#F2F2F2">Due FX Analytics Platform</h3>
+          <div style="font-size:17px;color:#BDF26D;line-height:1.4">An end-to-end GCP ELT stack for a Nigerian remittance startup.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:22px;justify-content:center">
+          <svg data-schematic="1" viewBox="0 0 600 56" preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;overflow:visible">
+            <path data-wire="1" d="M30,16 L570,16" fill="none" stroke="#3A2A25" stroke-width="1.2" />
+            <g fill="none" stroke="#5A4A44" stroke-width="1.4">
+              <circle data-dot="1" cx="30" cy="16" r="5" />
+              <circle data-dot="1" cx="138" cy="16" r="5" />
+              <circle data-dot="1" cx="246" cy="16" r="5" />
+              <circle data-dot="1" cx="354" cy="16" r="5" />
+              <circle data-dot="1" cx="462" cy="16" r="5" />
+              <circle data-dot="1" cx="570" cy="16" r="5" />
+            </g>
+            <g fill="#8B8C64" font-family="JetBrains Mono, monospace" font-size="13" letter-spacing="0.6" text-anchor="middle">
+              <text data-dotlabel="1" x="30" y="46">POSTGRES</text>
+              <text data-dotlabel="1" x="138" y="46">AIRFLOW</text>
+              <text data-dotlabel="1" x="246" y="46">GCS</text>
+              <text data-dotlabel="1" x="354" y="46">DBT</text>
+              <text data-dotlabel="1" x="462" y="46">BIGQUERY</text>
+              <text data-dotlabel="1" x="570" y="46">METABASE</text>
+            </g>
+          </svg>
+          <svg ref="{{ surface }}" viewBox="-150 -95 300 190" preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;max-height:230px;display:block;overflow:visible" aria-label="3D wireframe surface of the synthetic transaction distribution"></svg>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;line-height:1.6;letter-spacing:0.14em;text-transform:uppercase;color:#8B8C64;margin-top:-8px">30,000 synthetic transactions &middot; log-normal amounts &middot; evening-peaked intraday curve</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:28px;justify-content:space-between">
+          <p style="margin:0;color:#8B8C64;font-size:16px;line-height:1.65;max-width:60ch">PostgreSQL &rarr; Airflow &rarr; GCS &rarr; dbt &rarr; BigQuery &rarr; Metabase. Corridor-weighted synthetic transactions seed the warehouse; dbt models turn raw events into FX corridor margins analysts can query. Loads are idempotent, so a re-run is never a duplicate.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:#8B8C64;text-transform:uppercase">
+            <span style="border:1px solid rgba(255,255,255,0.1);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:rgba(255,255,255,0.32)">Airflow</span>
+            <span style="border:1px solid rgba(255,255,255,0.1);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:rgba(255,255,255,0.32)">dbt</span>
+            <span style="border:1px solid rgba(255,255,255,0.1);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:rgba(255,255,255,0.32)">BigQuery</span>
+            <span style="border:1px solid rgba(255,255,255,0.1);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:rgba(255,255,255,0.32)">GCS</span>
+            <a href="https://github.com/chinedumsunday/due-fx-analytics-platform" target="_blank" rel="noopener" style="margin-left:auto;color:#8B8C64;display:inline-flex;gap:8px;align-items:center">Source <span data-arrow="1" style="display:inline-block;transition:transform 200ms ease-out">&#8599;</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article data-reveal="1" data-card="1" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,max(260px,28%)),1fr));gap:40px;border-top:1px solid rgba(255,255,255,0.08);border-left:2px solid transparent;padding:56px 0 56px 24px;transition:background 200ms ease-out,border-left-color 200ms ease-out" style-hover="background:#14100E;border-left-color:#BDF26D">
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:#8B8C64">02 &nbsp;&middot;&nbsp; Personal project</div>
+          <h3 style="margin:0;font-size:clamp(26px,2.8vw,40px);line-height:1.05;font-weight:800;letter-spacing:-0.028em;color:#F2F2F2">News Desk Pipeline</h3>
+          <div style="font-size:17px;color:#BDF26D;line-height:1.4">Market news detected and published inside a minute.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:22px;justify-content:center">
+          <svg data-schematic="1" viewBox="0 0 600 56" preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;overflow:visible">
+            <path data-wire="1" d="M40,16 L560,16" fill="none" stroke="#3A2A25" stroke-width="1.2" />
+            <g fill="none" stroke="#5A4A44" stroke-width="1.4">
+              <circle data-dot="1" cx="40" cy="16" r="5" />
+              <circle data-dot="1" cx="213" cy="16" r="5" />
+              <circle data-dot="1" cx="386" cy="16" r="5" />
+              <circle data-dot="1" cx="560" cy="16" r="5" />
+            </g>
+            <g fill="#8B8C64" font-family="JetBrains Mono, monospace" font-size="13" letter-spacing="0.6" text-anchor="middle">
+              <text data-dotlabel="1" x="40" y="46">RSS / API</text>
+              <text data-dotlabel="1" x="213" y="46">CLASSIFY</text>
+              <text data-dotlabel="1" x="386" y="46">DRAFT</text>
+              <text data-dotlabel="1" x="560" y="46">PUBLISH</text>
+            </g>
+          </svg>
+          <svg ref="{{ surfaceNews }}" viewBox="-150 -95 300 190" preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;max-height:230px;display:block;overflow:visible" aria-label="3D wireframe surface of publish latency by hour"></svg>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;line-height:1.6;letter-spacing:0.14em;text-transform:uppercase;color:#8B8C64;margin-top:-8px">Detection-to-publish latency &middot; tight sub-minute mode &middot; bursty market hours</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:28px;justify-content:space-between">
+          <p style="margin:0;color:#8B8C64;font-size:16px;line-height:1.65;max-width:60ch">An independent side project running on a single AWS EC2 box: RSS and API monitors poll for market movement, an LLM classifies and drafts, systemd keeps the whole thing alive. Detection to published post lands between 10 seconds and a minute, with no human in the loop.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:#8B8C64;text-transform:uppercase">
+            <span style="border:1px solid rgba(255,255,255,0.1);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:rgba(255,255,255,0.32)">Python</span>
+            <span style="border:1px solid rgba(255,255,255,0.1);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:rgba(255,255,255,0.32)">AWS EC2</span>
+            <span style="border:1px solid rgba(255,255,255,0.1);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:rgba(255,255,255,0.32)">Claude API</span>
+            <span style="border:1px solid rgba(255,255,255,0.1);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:rgba(255,255,255,0.32)">systemd</span>
+            <a href="https://github.com/chinedumsunday/fx-news-desk" target="_blank" rel="noopener" style="margin-left:auto;color:#8B8C64;display:inline-flex;gap:8px;align-items:center">Source <span data-arrow="1" style="display:inline-block;transition:transform 200ms ease-out">&#8599;</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article data-reveal="1" data-card="1" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,max(260px,28%)),1fr));gap:40px;border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08);border-left:2px solid transparent;padding:56px 0 56px 24px;transition:background 200ms ease-out,border-left-color 200ms ease-out" style-hover="background:#14100E;border-left-color:#BDF26D">
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:#8B8C64">03</div>
+          <h3 style="margin:0;font-size:clamp(26px,2.8vw,40px);line-height:1.05;font-weight:800;letter-spacing:-0.028em;color:#F2F2F2">DataTel</h3>
+          <div style="font-size:17px;color:#BDF26D;line-height:1.4">101,000 telecom records, one DAG, no duplicates.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:22px;justify-content:center">
+          <svg data-schematic="1" viewBox="0 0 600 56" preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;overflow:visible">
+            <path data-wire="1" d="M40,16 L560,16" fill="none" stroke="#3A2A25" stroke-width="1.2" />
+            <g fill="none" stroke="#5A4A44" stroke-width="1.4">
+              <circle data-dot="1" cx="40" cy="16" r="5" />
+              <circle data-dot="1" cx="213" cy="16" r="5" />
+              <circle data-dot="1" cx="386" cy="16" r="5" />
+              <circle data-dot="1" cx="560" cy="16" r="5" />
+            </g>
+            <g fill="#8B8C64" font-family="JetBrains Mono, monospace" font-size="13" letter-spacing="0.6" text-anchor="middle">
+              <text data-dotlabel="1" x="40" y="46">EXTRACT</text>
+              <text data-dotlabel="1" x="213" y="46">STAGE</text>
+              <text data-dotlabel="1" x="386" y="46">MERGE</text>
+              <text data-dotlabel="1" x="560" y="46">BIGQUERY</text>
+            </g>
+          </svg>
+          <svg ref="{{ surfaceTel }}" viewBox="-150 -95 300 190" preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;max-height:230px;display:block;overflow:visible" aria-label="3D wireframe surface of telecom usage volume"></svg>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;line-height:1.6;letter-spacing:0.14em;text-transform:uppercase;color:#8B8C64;margin-top:-8px">101,000 usage records &middot; volume by daypart &middot; peak-hour concentration</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:28px;justify-content:space-between">
+          <p style="margin:0;color:#8B8C64;font-size:16px;line-height:1.65;max-width:60ch">A 24-task Airflow DAG ingests telecom usage data and lands it in BigQuery through idempotent MERGE loads. Task-level retries and dependency ordering mean a partial failure resumes rather than restarts.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:#8B8C64;text-transform:uppercase">
+            <span style="border:1px solid rgba(255,255,255,0.1);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:rgba(255,255,255,0.32)">Airflow</span>
+            <span style="border:1px solid rgba(255,255,255,0.1);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:rgba(255,255,255,0.32)">BigQuery</span>
+            <span style="border:1px solid rgba(255,255,255,0.1);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:rgba(255,255,255,0.32)">GCP</span>
+            <a href="https://github.com/chinedumsunday/Altschool-karatu-capsone-datatel-project" target="_blank" rel="noopener" style="margin-left:auto;color:#8B8C64;display:inline-flex;gap:8px;align-items:center">Source <span data-arrow="1" style="display:inline-block;transition:transform 200ms ease-out">&#8599;</span></a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section data-screen-label="Side builds" style="position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.08);padding:90px 5vw">
+    <div data-reveal="1">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;color:#8B8C64;text-transform:uppercase">(03) &nbsp; Things I build anyway</div>
+      <h2 style="margin:24px 0 0;font-size:clamp(26px,3.2vw,44px);line-height:1.05;font-weight:800;letter-spacing:-0.028em;max-width:24ch">Dashboards are the easy part.</h2>
+    </div>
+    <div style="margin-top:64px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,max(300px,45%)),1fr))">
+      <div data-reveal="1" style="padding:0 32px 34px 0;display:flex;flex-direction:column;gap:12px">
+        <div style="font-size:20px;font-weight:700;letter-spacing:-0.02em">Goody&rsquo;s</div>
+        <div style="color:#8B8C64;font-size:15px;line-height:1.55">Surprise call service &mdash; Paystack checkout into a WhatsApp delivery flow.</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:#8B8C64;text-transform:uppercase">
+          <span style="border:1px solid rgba(255,255,255,0.1);padding:5px 9px">Paystack</span>
+          <span style="border:1px solid rgba(255,255,255,0.1);padding:5px 9px">WhatsApp API</span>
+        </div>
+      </div>
+      <div data-reveal="1" style="padding:0 32px 34px;border-left:1px solid rgba(255,255,255,0.08);display:flex;flex-direction:column;gap:12px">
+        <div style="font-size:20px;font-weight:700;letter-spacing:-0.02em">iLearn / EdTain</div>
+        <div style="color:#8B8C64;font-size:15px;line-height:1.55">React Native learning platform with four distinct user roles.</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:#8B8C64;text-transform:uppercase">
+          <span style="border:1px solid rgba(255,255,255,0.1);padding:5px 9px">React Native</span>
+          <span style="border:1px solid rgba(255,255,255,0.1);padding:5px 9px">Auth</span>
+        </div>
+      </div>
+      <div data-reveal="1" style="padding:34px 32px 0 0;border-top:1px solid rgba(255,255,255,0.08);display:flex;flex-direction:column;gap:12px">
+        <div style="font-size:20px;font-weight:700;letter-spacing:-0.02em">Results on Chain</div>
+        <div style="color:#8B8C64;font-size:15px;line-height:1.55">Academic records system with blockchain-backed verification.</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:#8B8C64;text-transform:uppercase">
+          <span style="border:1px solid rgba(255,255,255,0.1);padding:5px 9px">Solidity</span>
+          <span style="border:1px solid rgba(255,255,255,0.1);padding:5px 9px">Web3</span>
+        </div>
+      </div>
+      <div data-reveal="1" style="padding:34px 32px 0;border-top:1px solid rgba(255,255,255,0.08);border-left:1px solid rgba(255,255,255,0.08);display:flex;flex-direction:column;gap:12px">
+        <div style="font-size:20px;font-weight:700;letter-spacing:-0.02em">Letters</div>
+        <div style="color:#8B8C64;font-size:15px;line-height:1.55">Encrypted private journal, written for one reader only.</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:#8B8C64;text-transform:uppercase">
+          <span style="border:1px solid rgba(255,255,255,0.1);padding:5px 9px">React Native</span>
+          <span style="border:1px solid rgba(255,255,255,0.1);padding:5px 9px">Encryption</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="Interlude" style="position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.08);padding:90px 5vw">
+    <div data-reveal="1">
+      <h2 style="margin:0;font-size:clamp(40px,7.4vw,132px);line-height:0.92;font-weight:900;letter-spacing:-0.045em;max-width:15ch">It ran at 3am.<br /><span style="color:#BDF26D">Nobody noticed.</span></h2>
+      <div style="margin-top:64px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#8B8C64">03:14 WAT &nbsp;&middot;&nbsp; 24/24 tasks &nbsp;&middot;&nbsp; success &nbsp;&middot;&nbsp; that is the whole job</div>
+    </div>
+  </section>
+
+  <section id="about" data-screen-label="About" style="position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.08);padding:90px 5vw;overflow:hidden">
+    <div data-reveal="1">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;color:#8B8C64;text-transform:uppercase">(04) &nbsp; About</div>
+      <h2 style="margin:24px 0 0;font-size:clamp(28px,3.4vw,48px);line-height:1.02;font-weight:800;letter-spacing:-0.032em;max-width:20ch">Statistics first.<br />Then the plumbing.</h2>
+    </div>
+    <pre style="position:absolute;top:180px;left:0;right:0;margin:0;padding:0 5vw;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7;color:#F2F2F2;opacity:0.07;pointer-events:none;white-space:pre;overflow:hidden;user-select:none">with DAG(
+    dag_id="due_fx_elt",
+    schedule="15 * * * *",
+    catchup=False,
+    default_args={"retries": 3, "retry_delay": timedelta(minutes=5)},
+) as dag:
+
+    extract = PostgresToGCSOperator(
+        task_id="extract_transactions",
+        sql=INCREMENTAL_SQL,  # bounded by data_interval_start
+        bucket=RAW_BUCKET,
+        export_format="parquet",
+    )
+
+    load = GCSToBigQueryOperator(
+        task_id="load_staging",
+        write_disposition="WRITE_TRUNCATE",
+        destination_project_dataset_table=f"{PROJECT}.staging.transactions",
+    )
+
+    merge = BigQueryInsertJobOperator(
+        task_id="merge_core",
+        configuration={"query": {"query": MERGE_SQL, "useLegacySql": False}},
+    )
+
+    transform = BashOperator(task_id="dbt_run", bash_command="dbt build --target prod")
+
+    extract >> load >> merge >> transform</pre>
+    <div style="position:relative;margin-top:64px;display:grid;grid-template-columns:{{ aboutCols }};gap:56px;align-items:start">
+      <div data-reveal="1" style="position:relative;padding:14px;border:1px solid rgba(255,255,255,0.1)">
+        <span style="position:absolute;top:-1px;left:-1px;width:14px;height:14px;border-top:1px solid #BDF26D;border-left:1px solid #BDF26D"></span>
+        <span style="position:absolute;top:-1px;right:-1px;width:14px;height:14px;border-top:1px solid #BDF26D;border-right:1px solid #BDF26D"></span>
+        <span style="position:absolute;bottom:-1px;left:-1px;width:14px;height:14px;border-bottom:1px solid #BDF26D;border-left:1px solid #BDF26D"></span>
+        <span style="position:absolute;bottom:-1px;right:-1px;width:14px;height:14px;border-bottom:1px solid #BDF26D;border-right:1px solid #BDF26D"></span>
+        <image-slot id="portrait" shape="rect" fit="cover" style="width:100%;aspect-ratio:4/5;filter:grayscale(0.35)" placeholder="Portrait photo"></image-slot>
+        <div style="display:flex;justify-content:space-between;gap:16px;margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:#8B8C64">
+          <span>Abuja, NG</span>
+          <span>WAT / UTC+1</span>
+        </div>
+      </div>
+      <div data-reveal="1" style="display:flex;flex-direction:column;gap:28px">
+        <p style="margin:0;color:#F2F2F2;font-size:17px;line-height:1.7;max-width:58ch">I came to data engineering from statistics, which is why I care less about the dashboard and more about whether the number behind it can be trusted at 3am. I build pipelines that are boring on purpose: idempotent, observable, and easy for the next person to read.</p>
+        <p style="margin:0;color:#8B8C64;font-size:17px;line-height:1.7;max-width:58ch">I&rsquo;m in Abuja and work with teams anywhere.</p>
+        <div style="display:flex;flex-direction:column;gap:14px;border-top:1px solid rgba(255,255,255,0.08);padding-top:24px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;color:#8B8C64;line-height:1.5">
+          <div>B.Sc. Statistics &mdash; University of Nigeria, Nsukka</div>
+          <div>Professional Diploma, Data Engineering &mdash; AltSchool Africa</div>
+          <div>DataCamp Professional Data Engineer &mdash; certified</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" data-screen-label="Contact" style="position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.08);padding:90px 5vw;overflow:hidden">
+    <div style="position:absolute;inset:0;pointer-events:none;opacity:0.04;filter:blur(14px)">
+      <svg viewBox="0 0 1200 320" preserveAspectRatio="xMidYMid slice" style="width:100%;height:100%">
+        <g fill="none" stroke="#F2F2F2" stroke-width="4">
+          <path d="M120,90 C255,90 255,60 390,60" />
+          <path d="M120,200 C255,200 255,145 390,145" />
+          <path d="M390,60 C525,60 525,100 660,100" />
+          <path d="M390,145 C525,145 525,200 660,200" />
+          <path d="M660,100 C880,100 880,150 1090,150" />
+          <path d="M660,200 C880,200 880,150 1090,150" />
+          <circle cx="120" cy="90" r="16" />
+          <circle cx="120" cy="200" r="16" />
+          <circle cx="390" cy="60" r="16" />
+          <circle cx="390" cy="145" r="16" />
+          <circle cx="660" cy="100" r="16" />
+          <circle cx="660" cy="200" r="16" />
+          <circle cx="1090" cy="150" r="16" />
+        </g>
+      </svg>
+    </div>
+    <div data-reveal="1" style="position:relative">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;color:#8B8C64;text-transform:uppercase">(05) &nbsp; Contact</div>
+      <h2 style="margin:24px 0 0;font-size:clamp(34px,6.4vw,104px);line-height:0.94;font-weight:900;letter-spacing:-0.045em;max-width:16ch">Got a pipeline that needs to be trusted?</h2>
+      <div style="margin-top:64px;display:flex;flex-direction:column;gap:32px">
+        <a href="mailto:chinedumsunday5@gmail.com" style="font-size:clamp(20px,2.6vw,38px);letter-spacing:-0.02em;color:#BDF26D;width:fit-content;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:8px;transition:border-color 200ms ease-out" style-hover="border-bottom-color:#BDF26D">chinedumsunday5@gmail.com</a>
+        <div style="display:flex;flex-wrap:wrap;gap:16px 40px;align-items:center;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8B8C64">
+          <a href="uploads/Chinedum_Sunday_CV_Data_Engineer_Master.pdf" download="" style="color:#F2F2F2;border:1px solid rgba(255,255,255,0.14);padding:10px 16px;transition:color 200ms ease-out,border-color 200ms ease-out" style-hover="color:#BDF26D;border-color:#BDF26D">Download CV &darr;</a>
+          <a data-wipe="1" href="tel:+2349127966144" style="color:#8B8C64">+234 912 796 6144</a>
+          <a data-wipe="1" href="https://github.com/chinedumsunday" style="color:#8B8C64">GitHub</a>
+          <a data-wipe="1" href="https://www.linkedin.com/in/chinedumsunday/" style="color:#8B8C64">LinkedIn</a>
+          <a data-wipe="1" href="https://x.com/chinedum_e_s" style="color:#8B8C64">X</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer style="position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.08);padding:32px 5vw;display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#8B8C64">
+    <span>Chinedum Sunday</span>
+    <span>Open to remote data engineering roles &middot; Abuja, WAT (UTC+1)</span>
+    <span>&copy; 26</span>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;runDag&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;DAG&quot;}}">
+const IDLE_STROKE = "#5A4A44", IDLE_FILL = "none";
+const AMBER = "#E5A94B", GREEN = "#BDF26D", GREEN_FILL = "#3B4A22", RED = "#C2503A";
+const EDGE_BASE = "#3A2A25", EDGE_LIVE = "#8A7060";
+
+class Component extends DCLogic {
+  state = { clock: "--:--:--", wide: true, narrow: false, menuOpen: false, runNote: "" };
+
+  constructor(props) {
+    super(props);
+    this.dagWrap = React.createRef();
+    this.progress = React.createRef();
+    this.tip = React.createRef();
+    this.surface = React.createRef();
+    this.surfaceNews = React.createRef();
+    this.surfaceTel = React.createRef();
+    this.heroSurface = React.createRef();
+    this.runCount = 0;
+    this.pending = [];
+  }
+
+  get reduced() {
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
+
+  renderVals() {
+    const n = this.state.narrow;
+    return {
+      clock: this.state.clock,
+      wide: this.state.wide,
+      narrow: n,
+      menuOpen: this.state.menuOpen,
+      runNote: this.state.runNote,
+      metricCols: n ? "repeat(2,minmax(0,1fr))" : "repeat(4,minmax(0,1fr))",
+      proofCols: n ? "minmax(0,1fr)" : "minmax(0,1.4fr) minmax(0,1fr)",
+      aboutCols: n ? "minmax(0,1fr)" : "minmax(0,0.8fr) minmax(0,1.7fr)",
+      dagH: n ? "120px" : "min(45%,300px)",
+      heroH: n ? "auto" : "82svh",
+      heroPadB: n ? "56px" : "72px",
+      heroGap: n ? "40px" : "64px",
+      dagWrap: this.dagWrap,
+      progress: this.progress,
+      tip: this.tip,
+      surface: this.surface,
+      surfaceNews: this.surfaceNews,
+      surfaceTel: this.surfaceTel,
+      heroSurface: this.heroSurface,
+      rerun: () => this.runDag(),
+      toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen }))
+    };
+  }
+
+  componentDidMount() {
+    this.tick();
+    this.timer = setInterval(() => this.tick(), 1000);
+    this.mq = window.matchMedia("(max-width: 760px)");
+    this.syncMq = () => this.setState({ wide: !this.mq.matches, narrow: this.mq.matches, menuOpen: false });
+    this.syncMq();
+    this.mq.addEventListener("change", this.syncMq);
+    this.reveal();
+    this.scrollUI();
+    this.counters();
+    this.schematics();
+    this.cardHover();
+    this.nodeHover();
+    this.buildSurface(this.surface, { period: 20000 });
+    this.buildSurface(this.surfaceNews, {
+      period: 18000, phase: 1.1, cols: 20, rows: 14,
+      density: (tx, tz) => {
+        const lat = Math.exp(-Math.pow(tx - 0.16, 2) / 0.012) + 0.25 * Math.exp(-Math.pow(tx - 0.5, 2) / 0.06);
+        const burst = 0.5 + Math.exp(-Math.pow(tz - 0.34, 2) / 0.02) + 0.8 * Math.exp(-Math.pow(tz - 0.78, 2) / 0.015);
+        return lat * burst;
+      }
+    });
+    this.buildSurface(this.surfaceTel, {
+      period: 22000, phase: 2.3, cols: 20, rows: 14,
+      density: (tx, tz) => {
+        const day = 0.4 + Math.exp(-Math.pow(tx - 0.38, 2) / 0.05) + 0.9 * Math.exp(-Math.pow(tx - 0.72, 2) / 0.03);
+        const plan = 0.5 + 0.7 * Math.exp(-Math.pow(tz - 0.6, 2) / 0.08);
+        return day * plan;
+      }
+    });
+    this.buildSurface(this.heroSurface, {
+      period: 90000, cols: 34, rows: 20, height: 62, weight: "0.35",
+      base: "#2A2622", peak: "#2A2622", opacity: 1
+    });
+    if (this.reduced) this.settleDag();
+    else this.pending.push(setTimeout(() => this.runDag(), 700));
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
+    if (this.mq) this.mq.removeEventListener("change", this.syncMq);
+    [this.io, this.cio, this.sio].forEach(o => o && o.disconnect());
+    window.removeEventListener("scroll", this.onScroll);
+    window.removeEventListener("pointermove", this.onSurfaceMove);
+    (this.surfaces || []).forEach(s => s.raf && cancelAnimationFrame(s.raf));
+    this.pending.forEach(clearTimeout);
+  }
+
+  tick() {
+    this.setState({
+      clock: new Intl.DateTimeFormat("en-GB", {
+        timeZone: "Africa/Lagos", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false
+      }).format(new Date())
+    });
+  }
+
+  scrollUI() {
+    const bar = this.progress && this.progress.current;
+    this.onScroll = () => {
+      if (!bar) return;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.transform = "scaleX(" + (max > 0 ? Math.min(1, window.scrollY / max) : 0).toFixed(4) + ")";
+    };
+    window.addEventListener("scroll", this.onScroll, { passive: true });
+    this.onScroll();
+  }
+
+  reveal() {
+    const nodes = Array.from(document.querySelectorAll("[data-reveal]"));
+    if (this.reduced || !nodes.length) return;
+    const mobile = this.state.narrow;
+    const counters = new Map();
+    nodes.forEach(n => {
+      const group = n.parentElement && n.parentElement.hasAttribute("data-stagger") ? n.parentElement : null;
+      let delay = 0;
+      if (group && !mobile) {
+        const step = Number(group.getAttribute("data-stagger")) || 0;
+        const i = counters.get(group) || 0;
+        counters.set(group, i + 1);
+        delay = i * step;
+      }
+      n.style.opacity = "0";
+      if (!mobile) n.style.transform = "translateY(16px)";
+      n.style.transition = "opacity 400ms ease-out " + delay + "ms" + (mobile ? "" : ", transform 400ms ease-out " + delay + "ms");
+    });
+    this.io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        e.target.style.opacity = "1";
+        e.target.style.transform = "none";
+        this.io.unobserve(e.target);
+      });
+    }, { threshold: 0.15 });
+    nodes.forEach(n => this.io.observe(n));
+  }
+
+  counters() {
+    const els = Array.from(document.querySelectorAll("[data-count]"));
+    if (!els.length) return;
+    const final = el => el.getAttribute("data-count") + (el.getAttribute("data-suffix") || "");
+    if (this.reduced || this.state.narrow) {
+      els.forEach(el => { el.textContent = final(el); });
+      return;
+    }
+    els.forEach(el => { el.textContent = "0" + (el.getAttribute("data-suffix") || ""); });
+    this.cio = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        const el = e.target;
+        this.cio.unobserve(el);
+        const to = Number(el.getAttribute("data-count"));
+        const sfx = el.getAttribute("data-suffix") || "";
+        const t0 = performance.now(), dur = 900;
+        const step = now => {
+          const k = Math.min(1, (now - t0) / dur);
+          el.textContent = Math.round(to * (1 - Math.pow(1 - k, 3))) + sfx;
+          if (k < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      });
+    }, { threshold: 0.15 });
+    els.forEach(el => this.cio.observe(el));
+  }
+
+  schematics() {
+    const svgs = Array.from(document.querySelectorAll("[data-schematic]"));
+    if (!svgs.length) return;
+    const setup = svg => {
+      const wire = svg.querySelector("[data-wire]");
+      const dots = Array.from(svg.querySelectorAll("[data-dot]"));
+      const labels = Array.from(svg.querySelectorAll("[data-dotlabel]"));
+      return { wire, dots, labels };
+    };
+    if (this.reduced) return;
+    svgs.forEach(svg => {
+      const { wire, dots, labels } = setup(svg);
+      if (wire) {
+        const len = wire.getTotalLength();
+        wire.style.strokeDasharray = len;
+        wire.style.strokeDashoffset = len;
+      }
+      dots.concat(labels).forEach(el => { el.style.opacity = "0"; el.style.transition = "opacity 200ms ease-out"; });
+    });
+    this.sio = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        const svg = e.target;
+        this.sio.unobserve(svg);
+        const { wire, dots, labels } = setup(svg);
+        if (wire) {
+          wire.style.transition = "stroke-dashoffset 600ms ease-out";
+          wire.style.strokeDashoffset = "0";
+        }
+        const n = dots.length || 1;
+        dots.forEach((d, i) => {
+          const t = (i / n) * 600;
+          this.pending.push(setTimeout(() => {
+            d.style.opacity = "1";
+            if (labels[i]) labels[i].style.opacity = "1";
+          }, t));
+        });
+      });
+    }, { threshold: 0.15 });
+    svgs.forEach(svg => this.sio.observe(svg));
+  }
+
+  cardHover() {
+    document.querySelectorAll("[data-card]").forEach(card => {
+      const arrow = card.querySelector("[data-arrow]");
+      if (!arrow) return;
+      card.addEventListener("mouseenter", () => { arrow.style.transform = "translateX(4px)"; });
+      card.addEventListener("mouseleave", () => { arrow.style.transform = "none"; });
+    });
+  }
+
+  nodeHover() {
+    const root = this.dagWrap && this.dagWrap.current;
+    const tip = this.tip && this.tip.current;
+    if (!root || !tip) return;
+    root.querySelectorAll("[data-node]").forEach(node => {
+      node.addEventListener("mouseenter", () => {
+        const nb = node.getBoundingClientRect(), rb = root.getBoundingClientRect();
+        tip.textContent = node.getAttribute("data-stage") || "";
+        tip.style.left = (nb.left - rb.left + nb.width / 2) + "px";
+        tip.style.top = (nb.top - rb.top - 26) + "px";
+        tip.style.transform = "translateX(-50%)";
+        tip.style.opacity = "1";
+        if (!this.reduced) node.style.transform = "translateY(-3px)";
+      });
+      node.addEventListener("mouseleave", () => {
+        tip.style.opacity = "0";
+        node.style.transform = "none";
+      });
+    });
+  }
+
+  buildSurface(ref, opts) {
+    const conf = opts || {};
+    const svg = (ref || this.surface) && (ref || this.surface).current;
+    if (!svg) return;
+    const NS = "http://www.w3.org/2000/svg";
+    const COLS = conf.cols || 22, ROWS = conf.rows || 15;
+    const period = conf.period || 20000;
+    const height = conf.height || 78;
+    const density = conf.density || ((tx, tz) => {
+      const hour = tz * 23;
+      const intraday = Math.exp(-Math.pow(hour - 19.5, 2) / 9) + 0.35 * Math.exp(-Math.pow(hour - 12, 2) / 26) + 0.08;
+      const amount = Math.exp(-1.6 + tx * 5.2);
+      return (Math.exp(-Math.pow(Math.log(amount) - 0.35, 2) / 0.9) / (amount * 1.3)) * intraday;
+    });
+    const grid = [];
+    let peak = 0;
+    for (let r = 0; r < ROWS; r++) {
+      const row = [];
+      const tz = r / (ROWS - 1);
+      for (let c = 0; c < COLS; c++) {
+        const t = c / (COLS - 1);
+        const d = density(t, tz);
+        if (d > peak) peak = d;
+        row.push({ x: (t - 0.5) * 200, z: (tz - 0.5) * 150, d: d });
+      }
+      grid.push(row);
+    }
+    grid.forEach(row => row.forEach(p => { p.y = -(p.d / peak) * height; p.n = p.d / peak; }));
+
+    const lines = [];
+    const add = pts => {
+      const el = document.createElementNS(NS, "polyline");
+      el.setAttribute("fill", "none");
+      el.setAttribute("stroke-width", conf.weight || "0.6");
+      el.setAttribute("stroke-linejoin", "round");
+      svg.appendChild(el);
+      lines.push({ el, pts });
+    };
+    for (let r = 0; r < ROWS; r++) add(grid[r]);
+    for (let c = 0; c < COLS; c++) add(grid.map(row => row[c]));
+
+    const project = (p, cosA, sinA, tilt) => {
+      const x = p.x * cosA - p.z * sinA;
+      const z = p.x * sinA + p.z * cosA;
+      const persp = 420 / (420 + z * 0.9);
+      const y = (p.y + z * tilt) * persp;
+      return [(x * persp).toFixed(2), (y * 0.86 + 34).toFixed(2)];
+    };
+
+    const paintFrame = (angle, tilt) => {
+      const cosA = Math.cos(angle), sinA = Math.sin(angle);
+      lines.forEach(l => {
+        let d = "";
+        let hot = 0;
+        for (const p of l.pts) {
+          const xy = project(p, cosA, sinA, tilt);
+          d += xy[0] + "," + xy[1] + " ";
+          if (p.n > hot) hot = p.n;
+        }
+        l.el.setAttribute("points", d.trim());
+        const lit = hot > 0.55;
+        l.el.setAttribute("stroke", lit ? (conf.peak || "#BDF26D") : (conf.base || "#2A2622"));
+        l.el.setAttribute("stroke-opacity", ((lit ? 0.3 * hot : 1) * (conf.opacity || 1)).toFixed(3));
+      });
+    };
+
+    const staticView = this.reduced || window.matchMedia("(max-width: 767px)").matches;
+    if (staticView) { paintFrame(-0.55, 0.34); return; }
+
+    const state = { tilt: 0.34, target: 0.34 };
+    (this.surfaces = this.surfaces || []).push(state);
+    if (!this.onSurfaceMove) {
+      this.onSurfaceMove = ev => {
+        const dy = (ev.clientY - window.innerHeight / 2) / window.innerHeight;
+        this.surfaces.forEach(s => { s.target = 0.34 + Math.max(-1, Math.min(1, dy)) * 0.12; });
+      };
+      window.addEventListener("pointermove", this.onSurfaceMove, { passive: true });
+    }
+
+    const t0 = performance.now();
+    const phase = conf.phase || 0;
+    const loop = now => {
+      state.raf = requestAnimationFrame(loop);
+      state.tilt += (state.target - state.tilt) * 0.02;
+      paintFrame(phase + ((now - t0) / period) * Math.PI * 2, state.tilt);
+    };
+    state.raf = requestAnimationFrame(loop);
+  }
+
+  dagParts() {
+    const root = this.dagWrap && this.dagWrap.current;
+    if (!root) return null;
+    const narrow = this.state.narrow;
+    return {
+      node: i => root.querySelector('[data-node="' + i + '"]'),
+      edge: i => root.querySelector('[data-edge="' + i + '"]'),
+      layers: narrow ? [[0], [1], [2], [3], [4]] : [[0, 1], [2, 3, 4], [5, 6], [7, 8], [9]],
+      incoming: narrow
+        ? { 1: [0], 2: [1], 3: [2], 4: [3] }
+        : { 2: [0], 3: [1, 2], 4: [3], 5: [4, 5], 6: [6, 7], 7: [8], 8: [9], 9: [10, 11] }
+    };
+  }
+
+  paint(c, mode) {
+    if (!c) return;
+    c.style.animation = "none";
+    if (mode === "idle") { c.setAttribute("stroke", IDLE_STROKE); c.setAttribute("fill", IDLE_FILL); }
+    if (mode === "amber") {
+      c.setAttribute("stroke", AMBER); c.setAttribute("fill", "none");
+      if (!this.reduced) c.style.animation = "nodePulse 400ms ease-in-out 1";
+    }
+    if (mode === "green") { c.setAttribute("stroke", GREEN); c.setAttribute("fill", GREEN_FILL); }
+    if (mode === "red") { c.setAttribute("stroke", RED); c.setAttribute("fill", "#2A100C"); }
+  }
+
+  resetDag() {
+    const p = this.dagParts();
+    if (!p) return;
+    this.pending.forEach(clearTimeout);
+    this.pending = [];
+    this.setState({ runNote: "" });
+    const root = this.dagWrap.current;
+    root.querySelectorAll("[data-node]").forEach(c => this.paint(c, "idle"));
+    root.querySelectorAll("[data-edge]").forEach(e => { e.style.transition = "stroke 300ms ease-out"; e.setAttribute("stroke", EDGE_BASE); });
+  }
+
+  settleDag() {
+    const p = this.dagParts();
+    if (!p) return;
+    const root = this.dagWrap.current;
+    root.querySelectorAll("[data-node]").forEach(c => this.paint(c, "green"));
+    root.querySelectorAll("[data-edge]").forEach(e => e.setAttribute("stroke", EDGE_BASE));
+  }
+
+  runDag() {
+    if (this.props.runDag === false) return;
+    const p = this.dagParts();
+    if (!p) return;
+    this.resetDag();
+    this.runCount += 1;
+    const failRun = this.runCount % 4 === 0;
+    const failNode = this.state.narrow ? 2 : 5;
+
+    if (this.reduced) {
+      this.settleDag();
+      this.setState({ runNote: failRun ? "24/24 tasks · success · 1 retry" : "24/24 tasks · success · 3.4s" });
+      this.pending.push(setTimeout(() => this.setState({ runNote: "" }), 2000));
+      return;
+    }
+
+    const step = 620, hold = 400;
+    const at = (ms, fn) => this.pending.push(setTimeout(fn, ms));
+    let extra = 0, retried = false;
+
+    p.layers.forEach((layer, li) => {
+      const base = li * step + extra;
+      layer.forEach(i => {
+        at(base, () => {
+          (p.incoming[i] || []).forEach(e => {
+            const edge = p.edge(e);
+            if (!edge) return;
+            edge.style.transition = "stroke 200ms ease-out";
+            edge.setAttribute("stroke", EDGE_LIVE);
+            at(hold + 300, () => edge.setAttribute("stroke", EDGE_BASE));
+          });
+          this.paint(p.node(i), "amber");
+        });
+        if (failRun && i === failNode) {
+          at(base + hold, () => this.paint(p.node(i), "red"));
+          at(base + hold + 800, () => this.paint(p.node(i), "amber"));
+          at(base + hold + 800 + hold, () => this.paint(p.node(i), "green"));
+          retried = true;
+        } else {
+          at(base + hold, () => this.paint(p.node(i), "green"));
+        }
+      });
+      if (failRun && layer.indexOf(failNode) > -1) extra += 800 + hold;
+    });
+
+    const total = p.layers.length * step + extra + hold;
+    at(total, () => {
+      this.setState({ runNote: retried ? "24/24 tasks · success · 1 retry" : "24/24 tasks · success · 3.4s" });
+      at(2000 + 240, () => this.setState({ runNote: "" }));
+    });
+  }
+}
+</script>
+</body>
+</html>
