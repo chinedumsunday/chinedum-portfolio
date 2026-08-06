@@ -11,6 +11,68 @@
 <link rel="icon" href="./favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="./apple-touch-icon.png">
 
+<style>
+  /* Dark is the authored default. Light is applied either by system preference
+     (when the visitor has expressed no choice) or by an explicit data-theme. */
+  :root {
+    color-scheme: dark;
+    --bg: #0F0D0C; --bg-mid: #161312; --bg-edge: #0A0908; --card: #14100E;
+    --fg: #F2F2F2; --muted: #8B8C64;
+    --accent: #BDF26D; --accent-fill: #BDF26D; --on-accent: #0F0D0C;
+    --accent-border: rgba(189,242,109,0.55); --accent-wash: rgba(189,242,109,0.05);
+    --line: rgba(255,255,255,0.08); --line-2: rgba(255,255,255,0.1);
+    --line-3: rgba(255,255,255,0.14); --line-4: rgba(255,255,255,0.16);
+    --line-strong: rgba(255,255,255,0.32); --wash: rgba(255,255,255,0.02);
+    --nav-bg: rgba(15,13,12,0.78); --menu-bg: rgba(15,13,12,0.96);
+    --dag-idle: #5A4A44; --dag-edge: #3A2A25; --dag-edge-live: #8A7060;
+    --dag-amber: #E5A94B; --dag-green: #BDF26D; --dag-green-fill: #3B4A22;
+    --dag-red: #C2503A; --dag-red-fill: #2A100C;
+    --surface-base: #2A2622; --surface-peak: #BDF26D;
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme]) {
+      color-scheme: light;
+      --bg: #F5F3EF; --bg-mid: #FFFFFF; --bg-edge: #E8E3DA; --card: #FFFFFF;
+      --fg: #14100E; --muted: #5C5D3E;
+      --accent: #4F6B18; --accent-fill: #6FA01C; --on-accent: #0F0D0C;
+      --accent-border: rgba(79,107,24,0.45); --accent-wash: rgba(79,107,24,0.07);
+      --line: rgba(20,16,14,0.10); --line-2: rgba(20,16,14,0.12);
+      --line-3: rgba(20,16,14,0.16); --line-4: rgba(20,16,14,0.18);
+      --line-strong: rgba(20,16,14,0.38); --wash: rgba(20,16,14,0.04);
+      --nav-bg: rgba(245,243,239,0.78); --menu-bg: rgba(245,243,239,0.96);
+      --dag-idle: #B3A69E; --dag-edge: #D8CEC7; --dag-edge-live: #9C8375;
+      --dag-amber: #B87A16; --dag-green: #4F6B18; --dag-green-fill: #D9EDB0;
+      --dag-red: #A33520; --dag-red-fill: #F3D6CF;
+      --surface-base: #D9D2C8; --surface-peak: #6FA01C;
+    }
+  }
+  :root[data-theme="light"] {
+    color-scheme: light;
+    --bg: #F5F3EF; --bg-mid: #FFFFFF; --bg-edge: #E8E3DA; --card: #FFFFFF;
+    --fg: #14100E; --muted: #5C5D3E;
+    --accent: #4F6B18; --accent-fill: #6FA01C; --on-accent: #0F0D0C;
+    --accent-border: rgba(79,107,24,0.45); --accent-wash: rgba(79,107,24,0.07);
+    --line: rgba(20,16,14,0.10); --line-2: rgba(20,16,14,0.12);
+    --line-3: rgba(20,16,14,0.16); --line-4: rgba(20,16,14,0.18);
+    --line-strong: rgba(20,16,14,0.38); --wash: rgba(20,16,14,0.04);
+    --nav-bg: rgba(245,243,239,0.78); --menu-bg: rgba(245,243,239,0.96);
+    --dag-idle: #B3A69E; --dag-edge: #D8CEC7; --dag-edge-live: #9C8375;
+    --dag-amber: #B87A16; --dag-green: #4F6B18; --dag-green-fill: #D9EDB0;
+    --dag-red: #A33520; --dag-red-fill: #F3D6CF;
+    --surface-base: #D9D2C8; --surface-peak: #6FA01C;
+  }
+  html, body { background: var(--bg); }
+</style>
+<script>
+  /* Applied before first paint so the correct theme never flashes. */
+  (function () {
+    try {
+      var t = localStorage.getItem("theme");
+      if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {}
+  })();
+</script>
+
 <meta property="og:title" content="Chinedum Sunday — Data Engineer">
 <meta property="og:description" content="Data engineer in Abuja, working remote. I build and maintain pipelines that run unattended — Python, SQL, Airflow, dbt, BigQuery.">
 <meta property="og:url" content="https://chinedumsunday.com/">
@@ -36,15 +98,15 @@
 <script src="./image-slot.js"></script>
 <style>
   html { scroll-behavior: smooth; }
-  html, body { margin: 0; padding: 0; background: #0F0D0C; }
+  html, body { margin: 0; padding: 0; background: var(--bg); }
   * { box-sizing: border-box; }
-  ::selection { background: #BDF26D; color: #0F0D0C; }
-  a { color: #F2F2F2; text-decoration: none; }
-  a:hover { color: #BDF26D; }
+  ::selection { background: var(--accent-fill); color: var(--on-accent); }
+  a { color: var(--fg); text-decoration: none; }
+  a:hover { color: var(--accent); }
   a[data-wipe] { position: relative; }
   a[data-wipe]::after {
     content: ""; position: absolute; left: 0; right: 0; bottom: -5px; height: 1px;
-    background: #BDF26D; transform: scaleX(0); transform-origin: left center;
+    background: var(--accent); transform: scaleX(0); transform-origin: left center;
     transition: transform 180ms ease-out;
   }
   a[data-wipe]:hover::after { transform: scaleX(1); }
@@ -58,10 +120,10 @@
   }
 </style>
 </helmet>
-<div style="position:relative;background:#0F0D0C;color:#F2F2F2;font-family:'Archivo',Helvetica,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden">
+<div style="position:relative;background:var(--bg);color:var(--fg);font-family:'Archivo',Helvetica,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden">
 
-  <div style="position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(120% 90% at 50% 38%, #161312 0%, #0F0D0C 55%, #0A0908 100%)"></div>
-  <div style="position:fixed;inset:0;z-index:0;pointer-events:none;background-image:radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);background-size:64px 64px;background-position:center"></div>
+  <div style="position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(120% 90% at 50% 38%, var(--bg-mid) 0%, var(--bg) 55%, var(--bg-edge) 100%)"></div>
+  <div style="position:fixed;inset:0;z-index:0;pointer-events:none;background-image:radial-gradient(var(--wash) 1px, transparent 1px);background-size:64px 64px;background-position:center"></div>
   <svg style="position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.03" aria-hidden="true">
     <filter id="filmgrain">
       <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"></feTurbulence>
@@ -70,33 +132,35 @@
     <rect width="100%" height="100%" filter="url(#filmgrain)"></rect>
   </svg>
 
-  <nav style="position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:14px 5vw;border-bottom:1px solid rgba(255,255,255,0.08);background:rgba(15,13,12,0.78);backdrop-filter:blur(10px);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#8B8C64">
-    <div ref="{{ progress }}" style="position:absolute;left:0;bottom:-1px;height:1px;width:100%;background:#BDF26D;opacity:0.7;transform:scaleX(0);transform-origin:left center"></div>
-    <a href="#top" style="color:#F2F2F2">Chinedum Sunday</a>
+  <nav style="position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:14px 5vw;border-bottom:1px solid var(--line);background:var(--nav-bg);backdrop-filter:blur(10px);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted)">
+    <div ref="{{ progress }}" style="position:absolute;left:0;bottom:-1px;height:1px;width:100%;background:var(--accent);opacity:0.7;transform:scaleX(0);transform-origin:left center"></div>
+    <a href="#top" style="color:var(--fg)">Chinedum Sunday</a>
     <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
       <div style="display:flex;gap:28px">
-        <a data-wipe="1" href="#work" style="color:#8B8C64">Work</a>
-        <a data-wipe="1" href="#about" style="color:#8B8C64">About</a>
-        <a data-wipe="1" href="#contact" style="color:#8B8C64">Contact</a>
+        <a data-wipe="1" href="#work" style="color:var(--muted)">Work</a>
+        <a data-wipe="1" href="#about" style="color:var(--muted)">About</a>
+        <a data-wipe="1" href="#contact" style="color:var(--muted)">Contact</a>
       </div>
       <div style="display:flex;align-items:center;gap:24px">
         <span ref="{{ clockWide }}" style="letter-spacing:0.1em;white-space:nowrap">WAT</span>
-        <a href="uploads/Chinedum_Sunday_Data_Engineer_CV.pdf" download="" style="color:#F2F2F2;border:1px solid rgba(255,255,255,0.14);padding:7px 12px" style-hover="color:#BDF26D;border-color:#BDF26D">CV &darr;</a>
+        <button type="button" onClick="{{ toggleTheme }}" aria-label="Switch between light and dark theme" title="Switch theme" style="font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1;color:var(--muted);background:none;border:1px solid var(--line-3);padding:7px 10px;cursor:pointer;transition:color 200ms ease-out,border-color 200ms ease-out" style-hover="color:var(--accent);border-color:var(--accent)">&#9680;</button>
+        <a href="uploads/Chinedum_Sunday_Data_Engineer_CV.pdf" download="" style="color:var(--fg);border:1px solid var(--line-3);padding:7px 12px" style-hover="color:var(--accent);border-color:var(--accent)">CV &darr;</a>
       </div>
     </sc-if>
     <sc-if value="{{ narrow }}" hint-placeholder-val="{{ false }}">
       <div style="display:flex;align-items:center;gap:16px">
         <span ref="{{ clockNarrow }}" style="letter-spacing:0.1em;white-space:nowrap">WAT</span>
-        <button type="button" onClick="{{ toggleMenu }}" style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#F2F2F2;background:none;border:1px solid rgba(255,255,255,0.14);padding:7px 12px;cursor:pointer">Menu</button>
+        <button type="button" onClick="{{ toggleMenu }}" style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--fg);background:none;border:1px solid var(--line-3);padding:7px 12px;cursor:pointer">Menu</button>
       </div>
     </sc-if>
   </nav>
   <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
-    <div style="position:sticky;top:47px;z-index:19;display:flex;flex-direction:column;gap:18px;padding:22px 5vw;border-bottom:1px solid rgba(255,255,255,0.08);background:rgba(15,13,12,0.96);font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase">
+    <div style="position:sticky;top:47px;z-index:19;display:flex;flex-direction:column;gap:18px;padding:22px 5vw;border-bottom:1px solid var(--line);background:var(--menu-bg);font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase">
       <a href="#work" onClick="{{ toggleMenu }}">Work</a>
       <a href="#about" onClick="{{ toggleMenu }}">About</a>
       <a href="#contact" onClick="{{ toggleMenu }}">Contact</a>
-      <a href="uploads/Chinedum_Sunday_Data_Engineer_CV.pdf" download="" style="color:#BDF26D">CV &darr;</a>
+      <a href="uploads/Chinedum_Sunday_Data_Engineer_CV.pdf" download="" style="color:var(--accent)">CV &darr;</a>
+      <button type="button" onClick="{{ toggleTheme }}" aria-label="Switch between light and dark theme" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:var(--fg);background:none;border:none;padding:0;text-align:left;cursor:pointer">&#9680;&nbsp;&nbsp;Theme</button>
     </div>
   </sc-if>
 
@@ -107,7 +171,7 @@
     <div style="position:relative;height:{{ dagH }};flex:0 0 auto" ref="{{ dagWrap }}">
       <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
         <svg viewBox="0 0 1200 320" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;display:block;overflow:visible">
-          <g fill="none" stroke="#3A2A25" stroke-width="1.2" opacity="0.5">
+          <g fill="none" stroke="var(--dag-edge)" stroke-width="1.2" opacity="0.5">
             <path data-edge="0" d="M120,90 C255,90 255,60 390,60" />
             <path data-edge="1" d="M120,90 C255,90 255,145 390,145" />
             <path data-edge="2" d="M120,200 C255,200 255,145 390,145" />
@@ -121,7 +185,7 @@
             <path data-edge="10" d="M900,100 C995,100 995,150 1090,150" />
             <path data-edge="11" d="M900,200 C995,200 995,150 1090,150" />
           </g>
-          <g fill="none" stroke="#5A4A44" stroke-width="1.6" opacity="0.55">
+          <g fill="none" stroke="var(--dag-idle)" stroke-width="1.6" opacity="0.55">
             <circle data-node="0" data-stage="EXTRACT" cx="120" cy="90" r="10" style="cursor:default;transition:transform 200ms ease-out" />
             <circle data-node="1" data-stage="EXTRACT" cx="120" cy="200" r="10" style="cursor:default;transition:transform 200ms ease-out" />
             <circle data-node="2" data-stage="STAGE" cx="390" cy="60" r="10" style="cursor:default;transition:transform 200ms ease-out" />
@@ -133,7 +197,7 @@
             <circle data-node="8" data-stage="TEST" cx="900" cy="200" r="10" style="cursor:default;transition:transform 200ms ease-out" />
             <circle data-node="9" data-stage="LOAD" cx="1090" cy="150" r="10" style="cursor:default;transition:transform 200ms ease-out" />
           </g>
-          <g fill="#8B8C64" font-family="JetBrains Mono, monospace" font-size="16" letter-spacing="2.2" text-anchor="middle">
+          <g fill="var(--muted)" font-family="JetBrains Mono, monospace" font-size="16" letter-spacing="2.2" text-anchor="middle">
             <text x="120" y="300">EXTRACT</text>
             <text x="390" y="300">STAGE</text>
             <text x="660" y="300">TRANSFORM</text>
@@ -144,20 +208,20 @@
       </sc-if>
       <sc-if value="{{ narrow }}" hint-placeholder-val="{{ false }}">
         <svg viewBox="0 0 260 96" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;display:block">
-          <g fill="none" stroke="#3A2A25" stroke-width="1.2" opacity="0.5">
+          <g fill="none" stroke="var(--dag-edge)" stroke-width="1.2" opacity="0.5">
             <path data-edge="0" d="M20,30 L75,30" />
             <path data-edge="1" d="M75,30 L130,30" />
             <path data-edge="2" d="M130,30 L185,30" />
             <path data-edge="3" d="M185,30 L240,30" />
           </g>
-          <g fill="none" stroke="#5A4A44" stroke-width="1.4" opacity="0.55">
+          <g fill="none" stroke="var(--dag-idle)" stroke-width="1.4" opacity="0.55">
             <circle data-node="0" data-stage="EXTRACT" cx="20" cy="30" r="6" />
             <circle data-node="1" data-stage="STAGE" cx="75" cy="30" r="6" />
             <circle data-node="2" data-stage="TRANSFORM" cx="130" cy="30" r="6" />
             <circle data-node="3" data-stage="TEST" cx="185" cy="30" r="6" />
             <circle data-node="4" data-stage="LOAD" cx="240" cy="30" r="6" />
           </g>
-          <g fill="#8B8C64" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="0.4" text-anchor="middle">
+          <g fill="var(--muted)" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="0.4" text-anchor="middle">
             <text x="20" y="62">EXTRACT</text>
             <text x="75" y="62">STAGE</text>
             <text x="130" y="62">MODEL</text>
@@ -166,7 +230,7 @@
           </g>
         </svg>
       </sc-if>
-      <div ref="{{ tip }}" style="position:absolute;left:0;top:0;opacity:0;pointer-events:none;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#0F0D0C;background:#BDF26D;padding:4px 7px;white-space:nowrap;transition:opacity 160ms ease-out"></div>
+      <div ref="{{ tip }}" style="position:absolute;left:0;top:0;opacity:0;pointer-events:none;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--on-accent);background:var(--accent-fill);padding:4px 7px;white-space:nowrap;transition:opacity 160ms ease-out"></div>
     </div>
 
     <div style="position:relative;z-index:2;display:flex;flex-direction:column;gap:{{ heroGap }};margin-top:{{ heroGap }}">
@@ -176,95 +240,95 @@
         <span data-hero="3" style="display:block;animation:heroLine 500ms ease-out 160ms both">nobody&rsquo;s watching.</span>
       </h1>
       <div data-hero="4" style="animation:heroLine 500ms ease-out 240ms both;display:flex;flex-wrap:wrap;gap:14px 32px;align-items:center;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.16em;text-transform:uppercase">
-        <a data-wipe="1" href="#work" style="border-bottom:1px solid rgba(255,255,255,0.14);padding-bottom:6px">See the work &darr;</a>
-        <a data-wipe="1" href="#contact" style="color:#8B8C64;padding-bottom:6px">Get in touch</a>
-        <button type="button" onClick="{{ rerun }}" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8B8C64;background:none;border:1px solid rgba(255,255,255,0.14);padding:9px 14px;cursor:pointer;transition:color 200ms ease-out,border-color 200ms ease-out" style-hover="color:#BDF26D;border-color:#BDF26D">&#8635; Trigger the run</button>
+        <a data-wipe="1" href="#work" style="border-bottom:1px solid var(--line-3);padding-bottom:6px">See the work &darr;</a>
+        <a data-wipe="1" href="#contact" style="color:var(--muted);padding-bottom:6px">Get in touch</a>
+        <button type="button" onClick="{{ rerun }}" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);background:none;border:1px solid var(--line-3);padding:9px 14px;cursor:pointer;transition:color 200ms ease-out,border-color 200ms ease-out" style-hover="color:var(--accent);border-color:var(--accent)">&#8635; Trigger the run</button>
         <sc-if value="{{ runNote }}" hint-placeholder-val="{{ false }}">
-          <span data-note="1" ref="{{ noteRef }}" style="animation:noteIn 240ms ease-out both;color:#BDF26D;letter-spacing:0.16em"></span>
+          <span data-note="1" ref="{{ noteRef }}" style="animation:noteIn 240ms ease-out both;color:var(--accent);letter-spacing:0.16em"></span>
         </sc-if>
       </div>
     </div>
   </header>
 
-  <section style="position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.08);padding:90px 5vw">
+  <section style="position:relative;z-index:1;border-top:1px solid var(--line);padding:90px 5vw">
     <div data-stagger="60" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,max(180px,18%)),1fr));gap:36px 24px">
       <div data-reveal="1">
-        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.2em;color:#8B8C64;text-transform:uppercase">Based</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.2em;color:var(--muted);text-transform:uppercase">Based</div>
         <div style="font-size:16px;margin-top:12px">Abuja, NG</div>
       </div>
       <div data-reveal="1">
-        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.2em;color:#8B8C64;text-transform:uppercase">Mode</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.2em;color:var(--muted);text-transform:uppercase">Mode</div>
         <div style="font-size:16px;margin-top:12px">Remote &middot; International</div>
       </div>
       <div data-reveal="1">
-        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.2em;color:#8B8C64;text-transform:uppercase">Stack</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.2em;color:var(--muted);text-transform:uppercase">Stack</div>
         <div style="font-size:16px;margin-top:12px;line-height:1.5">Python &middot; SQL &middot; Airflow<br />dbt &middot; BigQuery</div>
       </div>
       <div data-reveal="1">
-        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.2em;color:#8B8C64;text-transform:uppercase">Cloud</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.2em;color:var(--muted);text-transform:uppercase">Cloud</div>
         <div style="font-size:16px;margin-top:12px">GCP &middot; AWS</div>
       </div>
       <div data-reveal="1">
-        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.2em;color:#8B8C64;text-transform:uppercase">Status</div>
-        <div style="font-size:16px;margin-top:12px;color:#BDF26D">Open to remote roles</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.2em;color:var(--muted);text-transform:uppercase">Status</div>
+        <div style="font-size:16px;margin-top:12px;color:var(--accent)">Open to remote roles</div>
       </div>
     </div>
   </section>
 
-  <section data-screen-label="Proof" style="position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.08);padding:90px 5vw">
+  <section data-screen-label="Proof" style="position:relative;z-index:1;border-top:1px solid var(--line);padding:90px 5vw">
     <div style="display:grid;grid-template-columns:{{ proofCols }};gap:48px;align-items:center">
       <div data-reveal="1">
-        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;color:#8B8C64;text-transform:uppercase">(01) &nbsp; Proof, not adjectives</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;color:var(--muted);text-transform:uppercase">(01) &nbsp; Proof, not adjectives</div>
         <h2 style="margin:24px 0 0;font-size:clamp(30px,4.4vw,64px);line-height:1.0;font-weight:800;letter-spacing:-0.032em;max-width:22ch">Most pipelines run.<br />Fewer are trusted.</h2>
       </div>
       <div data-reveal="1" style="display:flex;justify-content:center;align-items:center;height:280px;perspective:1100px;perspective-origin:50% 50%">
         <div style="position:relative;width:230px;height:160px;transform-style:preserve-3d;transform:rotateX(60deg) rotateZ(-25deg)">
-          <div style="position:absolute;inset:0;transform:translateZ(76px);border:1px solid rgba(189,242,109,0.55);background:rgba(189,242,109,0.05)"></div>
-          <div style="position:absolute;left:12px;top:76px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;color:#BDF26D;transform:translateZ(76px)">MARTS</div>
-          <div style="position:absolute;inset:0;transform:translateZ(18px);border:1px solid rgba(255,255,255,0.16);background:rgba(255,255,255,0.02)"></div>
-          <div style="position:absolute;left:12px;top:76px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;color:#8B8C64;transform:translateZ(18px)">STAGING</div>
-          <div style="position:absolute;inset:0;transform:translateZ(-40px);border:1px solid rgba(255,255,255,0.1)"></div>
-          <div style="position:absolute;left:12px;top:76px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;color:#8B8C64;transform:translateZ(-40px)">RAW</div>
+          <div style="position:absolute;inset:0;transform:translateZ(76px);border:1px solid var(--accent-border);background:var(--accent-wash)"></div>
+          <div style="position:absolute;left:12px;top:76px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;color:var(--accent);transform:translateZ(76px)">MARTS</div>
+          <div style="position:absolute;inset:0;transform:translateZ(18px);border:1px solid var(--line-4);background:var(--wash)"></div>
+          <div style="position:absolute;left:12px;top:76px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;color:var(--muted);transform:translateZ(18px)">STAGING</div>
+          <div style="position:absolute;inset:0;transform:translateZ(-40px);border:1px solid var(--line-2)"></div>
+          <div style="position:absolute;left:12px;top:76px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;color:var(--muted);transform:translateZ(-40px)">RAW</div>
         </div>
       </div>
     </div>
     <div data-stagger="80" style="margin-top:64px;display:grid;grid-template-columns:{{ metricCols }}">
       <div data-reveal="1" style="padding:0 24px 0 0">
         <div style="font-family:'JetBrains Mono',monospace;font-size:clamp(26px,3.4vw,72px);letter-spacing:-0.04em;line-height:1;white-space:nowrap" data-count="10" data-suffix="S&ndash;1M">10S&ndash;1M</div>
-        <div style="margin-top:24px;color:#8B8C64;font-size:14px;line-height:1.5;max-width:26ch">Detection to published post, live news pipeline</div>
+        <div style="margin-top:24px;color:var(--muted);font-size:14px;line-height:1.5;max-width:26ch">Detection to published post, live news pipeline</div>
       </div>
-      <div data-reveal="1" style="padding:0 24px;border-left:1px solid rgba(255,255,255,0.08)">
+      <div data-reveal="1" style="padding:0 24px;border-left:1px solid var(--line)">
         <div style="font-family:'JetBrains Mono',monospace;font-size:clamp(40px,6vw,88px);letter-spacing:-0.04em;line-height:1;white-space:nowrap" data-count="101" data-suffix="K">101K</div>
-        <div style="margin-top:24px;color:#8B8C64;font-size:14px;line-height:1.5;max-width:26ch">Records through idempotent BigQuery MERGE loads</div>
+        <div style="margin-top:24px;color:var(--muted);font-size:14px;line-height:1.5;max-width:26ch">Records through idempotent BigQuery MERGE loads</div>
       </div>
-      <div data-reveal="1" style="padding:0 24px;border-left:1px solid rgba(255,255,255,0.08)">
+      <div data-reveal="1" style="padding:0 24px;border-left:1px solid var(--line)">
         <div style="font-family:'JetBrains Mono',monospace;font-size:clamp(40px,6vw,88px);letter-spacing:-0.04em;line-height:1;white-space:nowrap" data-count="30" data-suffix="K">30K</div>
-        <div style="margin-top:24px;color:#8B8C64;font-size:14px;line-height:1.5;max-width:26ch">Synthetic transactions, corridor-weighted, log-normal</div>
+        <div style="margin-top:24px;color:var(--muted);font-size:14px;line-height:1.5;max-width:26ch">Synthetic transactions, corridor-weighted, log-normal</div>
       </div>
-      <div data-reveal="1" style="padding:0 24px;border-left:1px solid rgba(255,255,255,0.08)">
+      <div data-reveal="1" style="padding:0 24px;border-left:1px solid var(--line)">
         <div style="font-family:'JetBrains Mono',monospace;font-size:clamp(26px,3.4vw,72px);letter-spacing:-0.04em;line-height:1;white-space:nowrap" data-count="24" data-suffix=" TASKS">24 TASKS</div>
-        <div style="margin-top:24px;color:#8B8C64;font-size:14px;line-height:1.5;max-width:26ch">Single orchestrated DAG, production Airflow</div>
+        <div style="margin-top:24px;color:var(--muted);font-size:14px;line-height:1.5;max-width:26ch">Single orchestrated DAG, production Airflow</div>
       </div>
     </div>
   </section>
 
-  <section id="work" data-screen-label="Selected work" style="position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.08);padding:90px 5vw">
+  <section id="work" data-screen-label="Selected work" style="position:relative;z-index:1;border-top:1px solid var(--line);padding:90px 5vw">
     <div data-reveal="1">
-      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;color:#8B8C64;text-transform:uppercase">(02) &nbsp; Selected work</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;color:var(--muted);text-transform:uppercase">(02) &nbsp; Selected work</div>
       <h2 style="margin:24px 0 0;font-size:clamp(30px,4.4vw,64px);line-height:1.0;font-weight:800;letter-spacing:-0.032em;max-width:22ch">Anyone can move data.<br />The job is moving it on time.</h2>
     </div>
 
     <div data-stagger="100" style="margin-top:64px;display:flex;flex-direction:column">
-      <article data-reveal="1" data-card="1" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,max(260px,28%)),1fr));gap:40px;border-top:1px solid rgba(255,255,255,0.08);border-left:2px solid transparent;padding:56px 0 56px 24px;transition:background 200ms ease-out,border-left-color 200ms ease-out" style-hover="background:#14100E;border-left-color:#BDF26D">
+      <article data-reveal="1" data-card="1" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,max(260px,28%)),1fr));gap:40px;border-top:1px solid var(--line);border-left:2px solid transparent;padding:56px 0 56px 24px;transition:background 200ms ease-out,border-left-color 200ms ease-out" style-hover="background:var(--card);border-left-color:var(--accent)">
         <div style="display:flex;flex-direction:column;gap:16px">
-          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:#8B8C64">01</div>
-          <h3 style="margin:0;font-size:clamp(26px,2.8vw,40px);line-height:1.05;font-weight:800;letter-spacing:-0.028em;color:#F2F2F2">Due FX Analytics Platform</h3>
-          <div style="font-size:17px;color:#BDF26D;line-height:1.4">An end-to-end GCP ELT stack for a Nigerian remittance startup.</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:var(--muted)">01</div>
+          <h3 style="margin:0;font-size:clamp(26px,2.8vw,40px);line-height:1.05;font-weight:800;letter-spacing:-0.028em;color:var(--fg)">Due FX Analytics Platform</h3>
+          <div style="font-size:17px;color:var(--accent);line-height:1.4">An end-to-end GCP ELT stack for a Nigerian remittance startup.</div>
         </div>
         <div style="display:flex;flex-direction:column;gap:22px;justify-content:center">
           <svg data-schematic="1" viewBox="0 0 600 56" preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;overflow:visible">
-            <path data-wire="1" d="M30,16 L570,16" fill="none" stroke="#3A2A25" stroke-width="1.2" />
-            <g fill="none" stroke="#5A4A44" stroke-width="1.4">
+            <path data-wire="1" d="M30,16 L570,16" fill="none" stroke="var(--dag-edge)" stroke-width="1.2" />
+            <g fill="none" stroke="var(--dag-idle)" stroke-width="1.4">
               <circle data-dot="1" cx="30" cy="16" r="5" />
               <circle data-dot="1" cx="138" cy="16" r="5" />
               <circle data-dot="1" cx="246" cy="16" r="5" />
@@ -272,7 +336,7 @@
               <circle data-dot="1" cx="462" cy="16" r="5" />
               <circle data-dot="1" cx="570" cy="16" r="5" />
             </g>
-            <g fill="#8B8C64" font-family="JetBrains Mono, monospace" font-size="13" letter-spacing="0.6" text-anchor="middle">
+            <g fill="var(--muted)" font-family="JetBrains Mono, monospace" font-size="13" letter-spacing="0.6" text-anchor="middle">
               <text data-dotlabel="1" x="30" y="46">POSTGRES</text>
               <text data-dotlabel="1" x="138" y="46">AIRFLOW</text>
               <text data-dotlabel="1" x="246" y="46">GCS</text>
@@ -282,36 +346,36 @@
             </g>
           </svg>
           <svg ref="{{ surface }}" viewBox="-150 -95 300 190" preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;max-height:230px;display:block;overflow:visible" aria-label="3D wireframe surface of the synthetic transaction distribution"></svg>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;line-height:1.6;letter-spacing:0.14em;text-transform:uppercase;color:#8B8C64;margin-top:-8px">30,000 synthetic transactions &middot; log-normal amounts &middot; evening-peaked intraday curve</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;line-height:1.6;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-top:-8px">30,000 synthetic transactions &middot; log-normal amounts &middot; evening-peaked intraday curve</div>
         </div>
         <div style="display:flex;flex-direction:column;gap:28px;justify-content:space-between">
-          <p style="margin:0;color:#8B8C64;font-size:16px;line-height:1.65;max-width:60ch">PostgreSQL &rarr; Airflow &rarr; GCS &rarr; dbt &rarr; BigQuery &rarr; Metabase. Corridor-weighted synthetic transactions seed the warehouse; dbt models turn raw events into FX corridor margins analysts can query. Loads are idempotent, so a re-run is never a duplicate.</p>
-          <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:#8B8C64;text-transform:uppercase">
-            <span style="border:1px solid rgba(255,255,255,0.1);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:rgba(255,255,255,0.32)">Airflow</span>
-            <span style="border:1px solid rgba(255,255,255,0.1);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:rgba(255,255,255,0.32)">dbt</span>
-            <span style="border:1px solid rgba(255,255,255,0.1);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:rgba(255,255,255,0.32)">BigQuery</span>
-            <span style="border:1px solid rgba(255,255,255,0.1);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:rgba(255,255,255,0.32)">GCS</span>
-            <a href="https://github.com/chinedumsunday/due-fx-analytics-platform" target="_blank" rel="noopener" style="margin-left:auto;color:#8B8C64;display:inline-flex;gap:8px;align-items:center">Source <span data-arrow="1" style="display:inline-block;transition:transform 200ms ease-out">&#8599;</span></a>
+          <p style="margin:0;color:var(--muted);font-size:16px;line-height:1.65;max-width:60ch">PostgreSQL &rarr; Airflow &rarr; GCS &rarr; dbt &rarr; BigQuery &rarr; Metabase. Corridor-weighted synthetic transactions seed the warehouse; dbt models turn raw events into FX corridor margins analysts can query. Loads are idempotent, so a re-run is never a duplicate.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:var(--muted);text-transform:uppercase">
+            <span style="border:1px solid var(--line-2);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:var(--line-strong)">Airflow</span>
+            <span style="border:1px solid var(--line-2);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:var(--line-strong)">dbt</span>
+            <span style="border:1px solid var(--line-2);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:var(--line-strong)">BigQuery</span>
+            <span style="border:1px solid var(--line-2);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:var(--line-strong)">GCS</span>
+            <a href="https://github.com/chinedumsunday/due-fx-analytics-platform" target="_blank" rel="noopener" style="margin-left:auto;color:var(--muted);display:inline-flex;gap:8px;align-items:center">Source <span data-arrow="1" style="display:inline-block;transition:transform 200ms ease-out">&#8599;</span></a>
           </div>
         </div>
       </article>
 
-      <article data-reveal="1" data-card="1" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,max(260px,28%)),1fr));gap:40px;border-top:1px solid rgba(255,255,255,0.08);border-left:2px solid transparent;padding:56px 0 56px 24px;transition:background 200ms ease-out,border-left-color 200ms ease-out" style-hover="background:#14100E;border-left-color:#BDF26D">
+      <article data-reveal="1" data-card="1" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,max(260px,28%)),1fr));gap:40px;border-top:1px solid var(--line);border-left:2px solid transparent;padding:56px 0 56px 24px;transition:background 200ms ease-out,border-left-color 200ms ease-out" style-hover="background:var(--card);border-left-color:var(--accent)">
         <div style="display:flex;flex-direction:column;gap:16px">
-          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:#8B8C64">02 &nbsp;&middot;&nbsp; Personal project</div>
-          <h3 style="margin:0;font-size:clamp(26px,2.8vw,40px);line-height:1.05;font-weight:800;letter-spacing:-0.028em;color:#F2F2F2">News Desk Pipeline</h3>
-          <div style="font-size:17px;color:#BDF26D;line-height:1.4">Market news detected and published inside a minute.</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:var(--muted)">02 &nbsp;&middot;&nbsp; Personal project</div>
+          <h3 style="margin:0;font-size:clamp(26px,2.8vw,40px);line-height:1.05;font-weight:800;letter-spacing:-0.028em;color:var(--fg)">News Desk Pipeline</h3>
+          <div style="font-size:17px;color:var(--accent);line-height:1.4">Market news detected and published inside a minute.</div>
         </div>
         <div style="display:flex;flex-direction:column;gap:22px;justify-content:center">
           <svg data-schematic="1" viewBox="0 0 600 56" preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;overflow:visible">
-            <path data-wire="1" d="M40,16 L560,16" fill="none" stroke="#3A2A25" stroke-width="1.2" />
-            <g fill="none" stroke="#5A4A44" stroke-width="1.4">
+            <path data-wire="1" d="M40,16 L560,16" fill="none" stroke="var(--dag-edge)" stroke-width="1.2" />
+            <g fill="none" stroke="var(--dag-idle)" stroke-width="1.4">
               <circle data-dot="1" cx="40" cy="16" r="5" />
               <circle data-dot="1" cx="213" cy="16" r="5" />
               <circle data-dot="1" cx="386" cy="16" r="5" />
               <circle data-dot="1" cx="560" cy="16" r="5" />
             </g>
-            <g fill="#8B8C64" font-family="JetBrains Mono, monospace" font-size="13" letter-spacing="0.6" text-anchor="middle">
+            <g fill="var(--muted)" font-family="JetBrains Mono, monospace" font-size="13" letter-spacing="0.6" text-anchor="middle">
               <text data-dotlabel="1" x="40" y="46">RSS / API</text>
               <text data-dotlabel="1" x="213" y="46">CLASSIFY</text>
               <text data-dotlabel="1" x="386" y="46">DRAFT</text>
@@ -319,36 +383,36 @@
             </g>
           </svg>
           <svg ref="{{ surfaceNews }}" viewBox="-150 -95 300 190" preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;max-height:230px;display:block;overflow:visible" aria-label="3D wireframe surface of publish latency by hour"></svg>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;line-height:1.6;letter-spacing:0.14em;text-transform:uppercase;color:#8B8C64;margin-top:-8px">Detection-to-publish latency &middot; tight sub-minute mode &middot; bursty market hours</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;line-height:1.6;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-top:-8px">Detection-to-publish latency &middot; tight sub-minute mode &middot; bursty market hours</div>
         </div>
         <div style="display:flex;flex-direction:column;gap:28px;justify-content:space-between">
-          <p style="margin:0;color:#8B8C64;font-size:16px;line-height:1.65;max-width:60ch">An independent side project running on a single AWS EC2 box: RSS and API monitors poll for market movement, an LLM classifies and drafts, systemd keeps the whole thing alive. Detection to published post lands between 10 seconds and a minute, fully automated end-to-end.</p>
-          <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:#8B8C64;text-transform:uppercase">
-            <span style="border:1px solid rgba(255,255,255,0.1);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:rgba(255,255,255,0.32)">Python</span>
-            <span style="border:1px solid rgba(255,255,255,0.1);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:rgba(255,255,255,0.32)">AWS EC2</span>
-            <span style="border:1px solid rgba(255,255,255,0.1);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:rgba(255,255,255,0.32)">Claude API</span>
-            <span style="border:1px solid rgba(255,255,255,0.1);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:rgba(255,255,255,0.32)">systemd</span>
-            <a href="https://github.com/chinedumsunday/fx-news-desk" target="_blank" rel="noopener" style="margin-left:auto;color:#8B8C64;display:inline-flex;gap:8px;align-items:center">Source <span data-arrow="1" style="display:inline-block;transition:transform 200ms ease-out">&#8599;</span></a>
+          <p style="margin:0;color:var(--muted);font-size:16px;line-height:1.65;max-width:60ch">An independent side project running on a single AWS EC2 box: RSS and API monitors poll for market movement, an LLM classifies and drafts, systemd keeps the whole thing alive. Detection to published post lands between 10 seconds and a minute, fully automated end-to-end.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:var(--muted);text-transform:uppercase">
+            <span style="border:1px solid var(--line-2);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:var(--line-strong)">Python</span>
+            <span style="border:1px solid var(--line-2);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:var(--line-strong)">AWS EC2</span>
+            <span style="border:1px solid var(--line-2);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:var(--line-strong)">Claude API</span>
+            <span style="border:1px solid var(--line-2);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:var(--line-strong)">systemd</span>
+            <a href="https://github.com/chinedumsunday/fx-news-desk" target="_blank" rel="noopener" style="margin-left:auto;color:var(--muted);display:inline-flex;gap:8px;align-items:center">Source <span data-arrow="1" style="display:inline-block;transition:transform 200ms ease-out">&#8599;</span></a>
           </div>
         </div>
       </article>
 
-      <article data-reveal="1" data-card="1" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,max(260px,28%)),1fr));gap:40px;border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08);border-left:2px solid transparent;padding:56px 0 56px 24px;transition:background 200ms ease-out,border-left-color 200ms ease-out" style-hover="background:#14100E;border-left-color:#BDF26D">
+      <article data-reveal="1" data-card="1" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,max(260px,28%)),1fr));gap:40px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);border-left:2px solid transparent;padding:56px 0 56px 24px;transition:background 200ms ease-out,border-left-color 200ms ease-out" style-hover="background:var(--card);border-left-color:var(--accent)">
         <div style="display:flex;flex-direction:column;gap:16px">
-          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:#8B8C64">03</div>
-          <h3 style="margin:0;font-size:clamp(26px,2.8vw,40px);line-height:1.05;font-weight:800;letter-spacing:-0.028em;color:#F2F2F2">DataTel</h3>
-          <div style="font-size:17px;color:#BDF26D;line-height:1.4">101,000 telecom records, one DAG, no duplicates.</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:var(--muted)">03</div>
+          <h3 style="margin:0;font-size:clamp(26px,2.8vw,40px);line-height:1.05;font-weight:800;letter-spacing:-0.028em;color:var(--fg)">DataTel</h3>
+          <div style="font-size:17px;color:var(--accent);line-height:1.4">101,000 telecom records, one DAG, no duplicates.</div>
         </div>
         <div style="display:flex;flex-direction:column;gap:22px;justify-content:center">
           <svg data-schematic="1" viewBox="0 0 600 56" preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;overflow:visible">
-            <path data-wire="1" d="M40,16 L560,16" fill="none" stroke="#3A2A25" stroke-width="1.2" />
-            <g fill="none" stroke="#5A4A44" stroke-width="1.4">
+            <path data-wire="1" d="M40,16 L560,16" fill="none" stroke="var(--dag-edge)" stroke-width="1.2" />
+            <g fill="none" stroke="var(--dag-idle)" stroke-width="1.4">
               <circle data-dot="1" cx="40" cy="16" r="5" />
               <circle data-dot="1" cx="213" cy="16" r="5" />
               <circle data-dot="1" cx="386" cy="16" r="5" />
               <circle data-dot="1" cx="560" cy="16" r="5" />
             </g>
-            <g fill="#8B8C64" font-family="JetBrains Mono, monospace" font-size="13" letter-spacing="0.6" text-anchor="middle">
+            <g fill="var(--muted)" font-family="JetBrains Mono, monospace" font-size="13" letter-spacing="0.6" text-anchor="middle">
               <text data-dotlabel="1" x="40" y="46">EXTRACT</text>
               <text data-dotlabel="1" x="213" y="46">STAGE</text>
               <text data-dotlabel="1" x="386" y="46">MERGE</text>
@@ -356,75 +420,75 @@
             </g>
           </svg>
           <svg ref="{{ surfaceTel }}" viewBox="-150 -95 300 190" preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;max-height:230px;display:block;overflow:visible" aria-label="3D wireframe surface of telecom usage volume"></svg>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;line-height:1.6;letter-spacing:0.14em;text-transform:uppercase;color:#8B8C64;margin-top:-8px">101,000 usage records &middot; volume by daypart &middot; peak-hour concentration</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;line-height:1.6;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-top:-8px">101,000 usage records &middot; volume by daypart &middot; peak-hour concentration</div>
         </div>
         <div style="display:flex;flex-direction:column;gap:28px;justify-content:space-between">
-          <p style="margin:0;color:#8B8C64;font-size:16px;line-height:1.65;max-width:60ch">A 24-task Airflow DAG ingests telecom usage data and lands it in BigQuery through idempotent MERGE loads. Task-level retries and dependency ordering mean a partial failure resumes rather than restarts.</p>
-          <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:#8B8C64;text-transform:uppercase">
-            <span style="border:1px solid rgba(255,255,255,0.1);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:rgba(255,255,255,0.32)">Airflow</span>
-            <span style="border:1px solid rgba(255,255,255,0.1);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:rgba(255,255,255,0.32)">BigQuery</span>
-            <span style="border:1px solid rgba(255,255,255,0.1);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:rgba(255,255,255,0.32)">GCP</span>
-            <a href="https://github.com/chinedumsunday/Altschool-karatu-capsone-datatel-project" target="_blank" rel="noopener" style="margin-left:auto;color:#8B8C64;display:inline-flex;gap:8px;align-items:center">Source <span data-arrow="1" style="display:inline-block;transition:transform 200ms ease-out">&#8599;</span></a>
+          <p style="margin:0;color:var(--muted);font-size:16px;line-height:1.65;max-width:60ch">A 24-task Airflow DAG ingests telecom usage data and lands it in BigQuery through idempotent MERGE loads. Task-level retries and dependency ordering mean a partial failure resumes rather than restarts.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:var(--muted);text-transform:uppercase">
+            <span style="border:1px solid var(--line-2);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:var(--line-strong)">Airflow</span>
+            <span style="border:1px solid var(--line-2);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:var(--line-strong)">BigQuery</span>
+            <span style="border:1px solid var(--line-2);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:var(--line-strong)">GCP</span>
+            <a href="https://github.com/chinedumsunday/Altschool-karatu-capsone-datatel-project" target="_blank" rel="noopener" style="margin-left:auto;color:var(--muted);display:inline-flex;gap:8px;align-items:center">Source <span data-arrow="1" style="display:inline-block;transition:transform 200ms ease-out">&#8599;</span></a>
           </div>
         </div>
       </article>
     </div>
   </section>
 
-  <section data-screen-label="Side builds" style="position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.08);padding:90px 5vw">
+  <section data-screen-label="Side builds" style="position:relative;z-index:1;border-top:1px solid var(--line);padding:90px 5vw">
     <div data-reveal="1">
-      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;color:#8B8C64;text-transform:uppercase">(03) &nbsp; Things I build anyway</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;color:var(--muted);text-transform:uppercase">(03) &nbsp; Things I build anyway</div>
       <h2 style="margin:24px 0 0;font-size:clamp(26px,3.2vw,44px);line-height:1.05;font-weight:800;letter-spacing:-0.028em;max-width:24ch">Dashboards are the easy part.</h2>
     </div>
     <div style="margin-top:64px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,max(300px,45%)),1fr))">
       <div data-reveal="1" style="padding:0 32px 34px 0;display:flex;flex-direction:column;gap:12px">
         <div style="font-size:20px;font-weight:700;letter-spacing:-0.02em">Goody&rsquo;s</div>
-        <div style="color:#8B8C64;font-size:15px;line-height:1.55">Surprise call service &mdash; Paystack checkout into a WhatsApp delivery flow.</div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:#8B8C64;text-transform:uppercase">
-          <span style="border:1px solid rgba(255,255,255,0.1);padding:5px 9px">Paystack</span>
-          <span style="border:1px solid rgba(255,255,255,0.1);padding:5px 9px">WhatsApp API</span>
+        <div style="color:var(--muted);font-size:15px;line-height:1.55">Surprise call service &mdash; Paystack checkout into a WhatsApp delivery flow.</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:var(--muted);text-transform:uppercase">
+          <span style="border:1px solid var(--line-2);padding:5px 9px">Paystack</span>
+          <span style="border:1px solid var(--line-2);padding:5px 9px">WhatsApp API</span>
         </div>
       </div>
-      <div data-reveal="1" style="padding:0 32px 34px;border-left:1px solid rgba(255,255,255,0.08);display:flex;flex-direction:column;gap:12px">
+      <div data-reveal="1" style="padding:0 32px 34px;border-left:1px solid var(--line);display:flex;flex-direction:column;gap:12px">
         <div style="font-size:20px;font-weight:700;letter-spacing:-0.02em">iLearn / EdTain</div>
-        <div style="color:#8B8C64;font-size:15px;line-height:1.55">React Native learning platform with four distinct user roles.</div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:#8B8C64;text-transform:uppercase">
-          <span style="border:1px solid rgba(255,255,255,0.1);padding:5px 9px">React Native</span>
-          <span style="border:1px solid rgba(255,255,255,0.1);padding:5px 9px">Auth</span>
+        <div style="color:var(--muted);font-size:15px;line-height:1.55">React Native learning platform with four distinct user roles.</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:var(--muted);text-transform:uppercase">
+          <span style="border:1px solid var(--line-2);padding:5px 9px">React Native</span>
+          <span style="border:1px solid var(--line-2);padding:5px 9px">Auth</span>
         </div>
       </div>
-      <div data-reveal="1" style="padding:34px 32px 0 0;border-top:1px solid rgba(255,255,255,0.08);display:flex;flex-direction:column;gap:12px">
+      <div data-reveal="1" style="padding:34px 32px 0 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:12px">
         <div style="font-size:20px;font-weight:700;letter-spacing:-0.02em">Results on Chain</div>
-        <div style="color:#8B8C64;font-size:15px;line-height:1.55">Academic records system with blockchain-backed verification.</div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:#8B8C64;text-transform:uppercase">
-          <span style="border:1px solid rgba(255,255,255,0.1);padding:5px 9px">Solidity</span>
-          <span style="border:1px solid rgba(255,255,255,0.1);padding:5px 9px">Web3</span>
+        <div style="color:var(--muted);font-size:15px;line-height:1.55">Academic records system with blockchain-backed verification.</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:var(--muted);text-transform:uppercase">
+          <span style="border:1px solid var(--line-2);padding:5px 9px">Solidity</span>
+          <span style="border:1px solid var(--line-2);padding:5px 9px">Web3</span>
         </div>
       </div>
-      <div data-reveal="1" style="padding:34px 32px 0;border-top:1px solid rgba(255,255,255,0.08);border-left:1px solid rgba(255,255,255,0.08);display:flex;flex-direction:column;gap:12px">
+      <div data-reveal="1" style="padding:34px 32px 0;border-top:1px solid var(--line);border-left:1px solid var(--line);display:flex;flex-direction:column;gap:12px">
         <div style="font-size:20px;font-weight:700;letter-spacing:-0.02em">Letters</div>
-        <div style="color:#8B8C64;font-size:15px;line-height:1.55">Encrypted private journal, written for one reader only.</div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:#8B8C64;text-transform:uppercase">
-          <span style="border:1px solid rgba(255,255,255,0.1);padding:5px 9px">React Native</span>
-          <span style="border:1px solid rgba(255,255,255,0.1);padding:5px 9px">Encryption</span>
+        <div style="color:var(--muted);font-size:15px;line-height:1.55">Encrypted private journal, written for one reader only.</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:var(--muted);text-transform:uppercase">
+          <span style="border:1px solid var(--line-2);padding:5px 9px">React Native</span>
+          <span style="border:1px solid var(--line-2);padding:5px 9px">Encryption</span>
         </div>
       </div>
     </div>
   </section>
 
-  <section data-screen-label="Interlude" style="position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.08);padding:90px 5vw">
+  <section data-screen-label="Interlude" style="position:relative;z-index:1;border-top:1px solid var(--line);padding:90px 5vw">
     <div data-reveal="1">
-      <h2 style="margin:0;font-size:clamp(40px,7.4vw,132px);line-height:0.92;font-weight:900;letter-spacing:-0.045em;max-width:15ch">It ran at 3am.<br /><span style="color:#BDF26D">Nobody noticed.</span></h2>
-      <div style="margin-top:64px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#8B8C64">03:14 WAT &nbsp;&middot;&nbsp; 24/24 tasks &nbsp;&middot;&nbsp; success &nbsp;&middot;&nbsp; that is the whole job</div>
+      <h2 style="margin:0;font-size:clamp(40px,7.4vw,132px);line-height:0.92;font-weight:900;letter-spacing:-0.045em;max-width:15ch">It ran at 3am.<br /><span style="color:var(--accent)">Nobody noticed.</span></h2>
+      <div style="margin-top:64px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:var(--muted)">03:14 WAT &nbsp;&middot;&nbsp; 24/24 tasks &nbsp;&middot;&nbsp; success &nbsp;&middot;&nbsp; that is the whole job</div>
     </div>
   </section>
 
-  <section id="about" data-screen-label="About" style="position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.08);padding:90px 5vw;overflow:hidden">
+  <section id="about" data-screen-label="About" style="position:relative;z-index:1;border-top:1px solid var(--line);padding:90px 5vw;overflow:hidden">
     <div data-reveal="1">
-      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;color:#8B8C64;text-transform:uppercase">(04) &nbsp; About</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;color:var(--muted);text-transform:uppercase">(04) &nbsp; About</div>
       <h2 style="margin:24px 0 0;font-size:clamp(28px,3.4vw,48px);line-height:1.02;font-weight:800;letter-spacing:-0.032em;max-width:20ch">Statistics first.<br />Then the plumbing.</h2>
     </div>
-    <pre style="position:absolute;top:180px;left:0;right:0;margin:0;padding:0 5vw;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7;color:#F2F2F2;opacity:0.07;pointer-events:none;white-space:pre;overflow:hidden;user-select:none">with DAG(
+    <pre style="position:absolute;top:180px;left:0;right:0;margin:0;padding:0 5vw;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7;color:var(--fg);opacity:0.07;pointer-events:none;white-space:pre;overflow:hidden;user-select:none">with DAG(
     dag_id="due_fx_elt",
     schedule="15 * * * *",
     catchup=False,
@@ -453,21 +517,21 @@
 
     extract >> load >> merge >> transform</pre>
     <div style="position:relative;margin-top:64px;display:grid;grid-template-columns:{{ aboutCols }};gap:56px;align-items:start">
-      <div data-reveal="1" style="position:relative;padding:14px;border:1px solid rgba(255,255,255,0.1)">
-        <span style="position:absolute;top:-1px;left:-1px;width:14px;height:14px;border-top:1px solid #BDF26D;border-left:1px solid #BDF26D"></span>
-        <span style="position:absolute;top:-1px;right:-1px;width:14px;height:14px;border-top:1px solid #BDF26D;border-right:1px solid #BDF26D"></span>
-        <span style="position:absolute;bottom:-1px;left:-1px;width:14px;height:14px;border-bottom:1px solid #BDF26D;border-left:1px solid #BDF26D"></span>
-        <span style="position:absolute;bottom:-1px;right:-1px;width:14px;height:14px;border-bottom:1px solid #BDF26D;border-right:1px solid #BDF26D"></span>
+      <div data-reveal="1" style="position:relative;padding:14px;border:1px solid var(--line-2)">
+        <span style="position:absolute;top:-1px;left:-1px;width:14px;height:14px;border-top:1px solid var(--accent);border-left:1px solid var(--accent)"></span>
+        <span style="position:absolute;top:-1px;right:-1px;width:14px;height:14px;border-top:1px solid var(--accent);border-right:1px solid var(--accent)"></span>
+        <span style="position:absolute;bottom:-1px;left:-1px;width:14px;height:14px;border-bottom:1px solid var(--accent);border-left:1px solid var(--accent)"></span>
+        <span style="position:absolute;bottom:-1px;right:-1px;width:14px;height:14px;border-bottom:1px solid var(--accent);border-right:1px solid var(--accent)"></span>
         <img src="portrait.jpeg" alt="Chinedum Sunday" style="display:block;width:100%;aspect-ratio:4/5;object-fit:cover;object-position:50% 22%" />
-        <div style="display:flex;justify-content:space-between;gap:16px;margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:#8B8C64">
+        <div style="display:flex;justify-content:space-between;gap:16px;margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted)">
           <span>Abuja, NG</span>
           <span>WAT / UTC+1</span>
         </div>
       </div>
       <div data-reveal="1" style="display:flex;flex-direction:column;gap:28px">
-        <p style="margin:0;color:#F2F2F2;font-size:17px;line-height:1.7;max-width:58ch">I came to data engineering from statistics, which is why I care less about the dashboard and more about whether the number behind it can be trusted at 3am. I build pipelines that are boring on purpose: idempotent, observable, and easy for the next person to read.</p>
-        <p style="margin:0;color:#8B8C64;font-size:17px;line-height:1.7;max-width:58ch">I&rsquo;m in Abuja and work with teams anywhere.</p>
-        <div style="display:flex;flex-direction:column;gap:14px;border-top:1px solid rgba(255,255,255,0.08);padding-top:24px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;color:#8B8C64;line-height:1.5">
+        <p style="margin:0;color:var(--fg);font-size:17px;line-height:1.7;max-width:58ch">I came to data engineering from statistics, which is why I care less about the dashboard and more about whether the number behind it can be trusted at 3am. I build pipelines that are boring on purpose: idempotent, observable, and easy for the next person to read.</p>
+        <p style="margin:0;color:var(--muted);font-size:17px;line-height:1.7;max-width:58ch">I&rsquo;m in Abuja and work with teams anywhere.</p>
+        <div style="display:flex;flex-direction:column;gap:14px;border-top:1px solid var(--line);padding-top:24px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;color:var(--muted);line-height:1.5">
           <div>B.Sc. Statistics &mdash; University of Nigeria, Nsukka</div>
           <div>Professional Diploma, Data Engineering &mdash; AltSchool Africa</div>
           <div>DataCamp Professional Data Engineer &mdash; certified</div>
@@ -476,10 +540,10 @@
     </div>
   </section>
 
-  <section id="contact" data-screen-label="Contact" style="position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.08);padding:90px 5vw;overflow:hidden">
+  <section id="contact" data-screen-label="Contact" style="position:relative;z-index:1;border-top:1px solid var(--line);padding:90px 5vw;overflow:hidden">
     <div style="position:absolute;inset:0;pointer-events:none;opacity:0.04;filter:blur(14px)">
       <svg viewBox="0 0 1200 320" preserveAspectRatio="xMidYMid slice" style="width:100%;height:100%">
-        <g fill="none" stroke="#F2F2F2" stroke-width="4">
+        <g fill="none" stroke="var(--fg)" stroke-width="4">
           <path d="M120,90 C255,90 255,60 390,60" />
           <path d="M120,200 C255,200 255,145 390,145" />
           <path d="M390,60 C525,60 525,100 660,100" />
@@ -497,22 +561,22 @@
       </svg>
     </div>
     <div data-reveal="1" style="position:relative">
-      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;color:#8B8C64;text-transform:uppercase">(05) &nbsp; Contact</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;color:var(--muted);text-transform:uppercase">(05) &nbsp; Contact</div>
       <h2 style="margin:24px 0 0;font-size:clamp(34px,6.4vw,104px);line-height:0.94;font-weight:900;letter-spacing:-0.045em;max-width:16ch">Got a pipeline that needs to be trusted?</h2>
       <div style="margin-top:64px;display:flex;flex-direction:column;gap:32px">
-        <a href="mailto:chinedumsunday5@gmail.com" style="font-size:clamp(20px,2.6vw,38px);letter-spacing:-0.02em;color:#BDF26D;width:fit-content;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:8px;transition:border-color 200ms ease-out" style-hover="border-bottom-color:#BDF26D">chinedumsunday5@gmail.com</a>
-        <div style="display:flex;flex-wrap:wrap;gap:16px 40px;align-items:center;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8B8C64">
-          <a href="uploads/Chinedum_Sunday_Data_Engineer_CV.pdf" download="" style="color:#F2F2F2;border:1px solid rgba(255,255,255,0.14);padding:10px 16px;transition:color 200ms ease-out,border-color 200ms ease-out" style-hover="color:#BDF26D;border-color:#BDF26D">Download CV &darr;</a>
-          <a data-wipe="1" href="tel:+2349127966144" style="color:#8B8C64">+234 912 796 6144</a>
-          <a data-wipe="1" href="https://github.com/chinedumsunday" style="color:#8B8C64">GitHub</a>
-          <a data-wipe="1" href="https://www.linkedin.com/in/chinedumsunday/" style="color:#8B8C64">LinkedIn</a>
-          <a data-wipe="1" href="https://x.com/chinedum_e_s" style="color:#8B8C64">X</a>
+        <a href="mailto:chinedumsunday5@gmail.com" style="font-size:clamp(20px,2.6vw,38px);letter-spacing:-0.02em;color:var(--accent);width:fit-content;border-bottom:1px solid var(--line-2);padding-bottom:8px;transition:border-color 200ms ease-out" style-hover="border-bottom-color:var(--accent)">chinedumsunday5@gmail.com</a>
+        <div style="display:flex;flex-wrap:wrap;gap:16px 40px;align-items:center;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted)">
+          <a href="uploads/Chinedum_Sunday_Data_Engineer_CV.pdf" download="" style="color:var(--fg);border:1px solid var(--line-3);padding:10px 16px;transition:color 200ms ease-out,border-color 200ms ease-out" style-hover="color:var(--accent);border-color:var(--accent)">Download CV &darr;</a>
+          <a data-wipe="1" href="tel:+2349127966144" style="color:var(--muted)">+234 912 796 6144</a>
+          <a data-wipe="1" href="https://github.com/chinedumsunday" style="color:var(--muted)">GitHub</a>
+          <a data-wipe="1" href="https://www.linkedin.com/in/chinedumsunday/" style="color:var(--muted)">LinkedIn</a>
+          <a data-wipe="1" href="https://x.com/chinedum_e_s" style="color:var(--muted)">X</a>
         </div>
       </div>
     </div>
   </section>
 
-  <footer style="position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.08);padding:32px 5vw;display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#8B8C64">
+  <footer style="position:relative;z-index:1;border-top:1px solid var(--line);padding:32px 5vw;display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted)">
     <span>Chinedum Sunday</span>
     <span>Open to remote data engineering roles &middot; Abuja, WAT (UTC+1)</span>
     <span ref="{{ yearRef }}">&copy; 2026</span>
@@ -520,9 +584,9 @@
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;runDag&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;DAG&quot;}}">
-const IDLE_STROKE = "#5A4A44", IDLE_FILL = "none";
-const AMBER = "#E5A94B", GREEN = "#BDF26D", GREEN_FILL = "#3B4A22", RED = "#C2503A";
-const EDGE_BASE = "#3A2A25", EDGE_LIVE = "#8A7060";
+const IDLE_STROKE = "var(--dag-idle)", IDLE_FILL = "none";
+const AMBER = "var(--dag-amber)", GREEN = "var(--dag-green)", GREEN_FILL = "var(--dag-green-fill)", RED = "var(--dag-red)";
+const EDGE_BASE = "var(--dag-edge)", EDGE_LIVE = "var(--dag-edge-live)";
 
 class Component extends DCLogic {
   state = { wide: true, narrow: false, menuOpen: false, runNote: "" };
@@ -547,6 +611,20 @@ class Component extends DCLogic {
 
   get reduced() {
     return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
+
+  // Theme lives on <html data-theme>. Absent that attribute the CSS falls back
+  // to prefers-color-scheme, so an untouched visit follows the visitor's OS.
+  get theme() {
+    const set = document.documentElement.getAttribute("data-theme");
+    if (set === "light" || set === "dark") return set;
+    return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+  }
+
+  toggleTheme() {
+    const next = this.theme === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", next);
+    try { localStorage.setItem("theme", next); } catch (e) {}
   }
 
   renderVals() {
@@ -575,7 +653,8 @@ class Component extends DCLogic {
       surfaceTel: this.surfaceTel,
       heroSurface: this.heroSurface,
       rerun: () => this.runDag(),
-      toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen }))
+      toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen })),
+      toggleTheme: () => this.toggleTheme()
     };
   }
 
@@ -612,7 +691,7 @@ class Component extends DCLogic {
     });
     this.buildSurface(this.heroSurface, {
       period: 90000, cols: 34, rows: 20, height: 62, weight: "0.35",
-      base: "#2A2622", peak: "#2A2622", opacity: 1
+      base: "var(--surface-base)", peak: "var(--surface-base)", opacity: 1
     });
     if (this.reduced) this.settleDag();
     else this.pending.push(setTimeout(() => this.runDag(), 700));
@@ -862,7 +941,7 @@ class Component extends DCLogic {
         }
         l.el.setAttribute("points", d.trim());
         const lit = hot > 0.55;
-        l.el.setAttribute("stroke", lit ? (conf.peak || "#BDF26D") : (conf.base || "#2A2622"));
+        l.el.style.stroke = lit ? (conf.peak || "var(--surface-peak)") : (conf.base || "var(--surface-base)");
         l.el.setAttribute("stroke-opacity", ((lit ? 0.3 * hot : 1) * (conf.opacity || 1)).toFixed(3));
       });
     };
@@ -907,13 +986,13 @@ class Component extends DCLogic {
   paint(c, mode) {
     if (!c) return;
     c.style.animation = "none";
-    if (mode === "idle") { c.setAttribute("stroke", IDLE_STROKE); c.setAttribute("fill", IDLE_FILL); }
+    if (mode === "idle") { c.style.stroke = IDLE_STROKE; c.style.fill = IDLE_FILL; }
     if (mode === "amber") {
-      c.setAttribute("stroke", AMBER); c.setAttribute("fill", "none");
+      c.style.stroke = AMBER; c.style.fill = "none";
       if (!this.reduced) c.style.animation = "nodePulse 400ms ease-in-out 1";
     }
-    if (mode === "green") { c.setAttribute("stroke", GREEN); c.setAttribute("fill", GREEN_FILL); }
-    if (mode === "red") { c.setAttribute("stroke", RED); c.setAttribute("fill", "#2A100C"); }
+    if (mode === "green") { c.style.stroke = GREEN; c.style.fill = GREEN_FILL; }
+    if (mode === "red") { c.style.stroke = RED; c.style.fill = "var(--dag-red-fill)"; }
   }
 
   resetDag() {
@@ -924,7 +1003,7 @@ class Component extends DCLogic {
     this.setState({ runNote: "" });
     const root = this.dagWrap.current;
     root.querySelectorAll("[data-node]").forEach(c => this.paint(c, "idle"));
-    root.querySelectorAll("[data-edge]").forEach(e => { e.style.transition = "stroke 300ms ease-out"; e.setAttribute("stroke", EDGE_BASE); });
+    root.querySelectorAll("[data-edge]").forEach(e => { e.style.transition = "stroke 300ms ease-out"; e.style.stroke = EDGE_BASE; });
   }
 
   settleDag() {
@@ -932,7 +1011,7 @@ class Component extends DCLogic {
     if (!p) return;
     const root = this.dagWrap.current;
     root.querySelectorAll("[data-node]").forEach(c => this.paint(c, "green"));
-    root.querySelectorAll("[data-edge]").forEach(e => e.setAttribute("stroke", EDGE_BASE));
+    root.querySelectorAll("[data-edge]").forEach(e => { e.style.stroke = EDGE_BASE; });
   }
 
   runDag() {
@@ -963,8 +1042,8 @@ class Component extends DCLogic {
             const edge = p.edge(e);
             if (!edge) return;
             edge.style.transition = "stroke 200ms ease-out";
-            edge.setAttribute("stroke", EDGE_LIVE);
-            at(hold + 300, () => edge.setAttribute("stroke", EDGE_BASE));
+            edge.style.stroke = EDGE_LIVE;
+            at(hold + 300, () => { edge.style.stroke = EDGE_BASE; });
           });
           this.paint(p.node(i), "amber");
         });
