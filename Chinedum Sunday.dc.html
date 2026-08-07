@@ -120,7 +120,7 @@
   }
 </style>
 </helmet>
-<div style="position:relative;background:var(--bg);color:var(--fg);font-family:'Archivo',Helvetica,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden">
+<div style="position:relative;background:var(--bg);color:var(--fg);font-family:'Archivo',Helvetica,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:clip">
 
   <div style="position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(120% 90% at 50% 38%, var(--bg-mid) 0%, var(--bg) 55%, var(--bg-edge) 100%)"></div>
   <div style="position:fixed;inset:0;z-index:0;pointer-events:none;background-image:radial-gradient(var(--wash) 1px, transparent 1px);background-size:64px 64px;background-position:center"></div>
@@ -457,7 +457,7 @@
           <span style="border:1px solid var(--line-2);padding:5px 9px">Auth</span>
         </div>
       </div>
-      <div data-reveal="1" style="padding:34px 32px 0 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:12px">
+      <div data-reveal="1" style="padding:34px 32px 34px 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:12px">
         <div style="font-size:20px;font-weight:700;letter-spacing:-0.02em">Results on Chain</div>
         <div style="color:var(--muted);font-size:15px;line-height:1.55">Academic records system with blockchain-backed verification.</div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:var(--muted);text-transform:uppercase">
@@ -465,7 +465,15 @@
           <span style="border:1px solid var(--line-2);padding:5px 9px">Web3</span>
         </div>
       </div>
-      <div data-reveal="1" style="padding:34px 32px 0;border-top:1px solid var(--line);border-left:1px solid var(--line);display:flex;flex-direction:column;gap:12px">
+      <div data-reveal="1" style="padding:34px 32px 34px;border-top:1px solid var(--line);border-left:1px solid var(--line);display:flex;flex-direction:column;gap:12px">
+        <div style="font-size:20px;font-weight:700;letter-spacing:-0.02em">Canton / DAML</div>
+        <div style="color:var(--muted);font-size:15px;line-height:1.55">Five full-stack applications on Canton LocalNet &mdash; marketplace, lending, treasury, loyalty, compliance.</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:var(--muted);text-transform:uppercase">
+          <span style="border:1px solid var(--line-2);padding:5px 9px">DAML</span>
+          <span style="border:1px solid var(--line-2);padding:5px 9px">React</span>
+        </div>
+      </div>
+      <div data-reveal="1" style="grid-column:1/-1;padding:34px 32px 0 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:12px">
         <div style="font-size:20px;font-weight:700;letter-spacing:-0.02em">Letters</div>
         <div style="color:var(--muted);font-size:15px;line-height:1.55">Encrypted private journal, written for one reader only.</div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:var(--muted);text-transform:uppercase">
@@ -531,6 +539,7 @@
       <div data-reveal="1" style="display:flex;flex-direction:column;gap:28px">
         <p style="margin:0;color:var(--fg);font-size:17px;line-height:1.7;max-width:58ch">I came to data engineering from statistics, which is why I care less about the dashboard and more about whether the number behind it can be trusted at 3am. I build pipelines that are boring on purpose: idempotent, observable, and easy for the next person to read.</p>
         <p style="margin:0;color:var(--muted);font-size:17px;line-height:1.7;max-width:58ch">I&rsquo;m in Abuja and work with teams anywhere.</p>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;color:var(--fg);line-height:1.5">Currently: News Editor at MyTradingLand &middot; Community Moderator at Cantor8</div>
         <div style="display:flex;flex-direction:column;gap:14px;border-top:1px solid var(--line);padding-top:24px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;color:var(--muted);line-height:1.5">
           <div>B.Sc. Statistics &mdash; University of Nigeria, Nsukka</div>
           <div>Professional Diploma, Data Engineering &mdash; AltSchool Africa</div>
