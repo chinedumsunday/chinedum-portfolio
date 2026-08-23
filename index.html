@@ -440,7 +440,76 @@
       <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;color:var(--muted);text-transform:uppercase">(03) &nbsp; Things I build anyway</div>
       <h2 style="margin:24px 0 0;font-size:clamp(26px,3.2vw,44px);line-height:1.05;font-weight:800;letter-spacing:-0.028em;max-width:24ch">Dashboards are the easy part.</h2>
     </div>
-    <div style="margin-top:64px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,max(300px,45%)),1fr))">
+
+    <article data-reveal="1" data-card="1" style="margin-top:64px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,max(260px,28%)),1fr));gap:40px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);border-left:2px solid transparent;padding:56px 0 56px 24px;transition:background 200ms ease-out,border-left-color 200ms ease-out" style-hover="background:var(--card);border-left-color:var(--accent)">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:var(--muted)">Canton Network &nbsp;&middot;&nbsp; Personal project</div>
+        <h3 style="margin:0;font-size:clamp(26px,2.8vw,40px);line-height:1.05;font-weight:800;letter-spacing:-0.028em;color:var(--fg)">Canton / DAML</h3>
+        <div style="font-size:17px;color:var(--accent);line-height:1.4">The rule lives in the contract, not the frontend.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:22px;justify-content:center">
+        <svg data-schematic="1" viewBox="0 0 600 56" preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;overflow:visible">
+          <path data-wire="1" d="M40,16 L560,16" fill="none" stroke="var(--dag-edge)" stroke-width="1.2" />
+          <g fill="none" stroke="var(--dag-idle)" stroke-width="1.4">
+            <circle data-dot="1" cx="40" cy="16" r="5" />
+            <circle data-dot="1" cx="213" cy="16" r="5" />
+            <circle data-dot="1" cx="386" cy="16" r="5" />
+            <circle data-dot="1" cx="560" cy="16" r="5" />
+          </g>
+          <g fill="var(--muted)" font-family="JetBrains Mono, monospace" font-size="13" letter-spacing="0.6" text-anchor="middle">
+            <text data-dotlabel="1" x="40" y="46">DAML</text>
+            <text data-dotlabel="1" x="213" y="46">CANTON</text>
+            <text data-dotlabel="1" x="386" y="46">JSON API</text>
+            <text data-dotlabel="1" x="560" y="46">REACT</text>
+          </g>
+        </svg>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;line-height:1.6;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-top:-8px">DAML SDK 3.4.11 &middot; Canton LocalNet &middot; JSON Ledger API v2 &middot; React 19</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:28px;justify-content:space-between">
+        <p style="margin:0;color:var(--muted);font-size:16px;line-height:1.65;max-width:60ch">Three full-stack apps on a local Canton node &mdash; a marketplace, a two-admin treasury, an airline loyalty programme &mdash; each a set of DAML templates with a React front end talking to the JSON Ledger API. The point of all three is the same: a treasury release cannot execute until both admins have countersigned, and redeeming more points than you hold fails at the ledger, not in a form validator. Behind them is the DAML work they grew out of &mdash; lending, onboarding, and the privacy model that decides who can even see a contract.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:var(--muted);text-transform:uppercase">
+          <span style="border:1px solid var(--line-2);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:var(--line-strong)">DAML</span>
+          <span style="border:1px solid var(--line-2);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:var(--line-strong)">Canton</span>
+          <span style="border:1px solid var(--line-2);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:var(--line-strong)">React</span>
+          <span style="border:1px solid var(--line-2);padding:6px 10px;transition:border-color 200ms ease-out" style-hover="border-color:var(--line-strong)">Multi-party</span>
+        </div>
+      </div>
+
+      <div style="grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,max(200px,18%)),1fr));border-top:1px solid var(--line)">
+        <div style="padding:28px 22px 0 0;display:flex;flex-direction:column;gap:10px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent)">Full-stack</div>
+          <a href="https://github.com/chinedumsunday/canton-marketplace" target="_blank" rel="noopener" style="font-size:15px;font-weight:700;letter-spacing:-0.01em;color:var(--fg);display:inline-flex;gap:6px;align-items:baseline;width:fit-content;border-bottom:1px solid var(--line-2);padding-bottom:3px;transition:border-color 200ms ease-out" style-hover="border-bottom-color:var(--accent)">Marketplace <span style="font-size:11px;color:var(--muted)">&#8599;</span></a>
+          <div style="color:var(--muted);font-size:13.5px;line-height:1.55">Seller lists, buyer offers, seller accepts. The receipt is signed by both, so neither side can quietly archive it.</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;line-height:1.7;letter-spacing:0.06em;color:var(--muted);opacity:0.75">Listing &rarr; PendingOffer &rarr; SaleReceipt</div>
+        </div>
+        <div style="padding:28px 22px 0;border-left:1px solid var(--line);display:flex;flex-direction:column;gap:10px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent)">Full-stack</div>
+          <a href="https://github.com/chinedumsunday/canton-treasury_practice" target="_blank" rel="noopener" style="font-size:15px;font-weight:700;letter-spacing:-0.01em;color:var(--fg);display:inline-flex;gap:6px;align-items:baseline;width:fit-content;border-bottom:1px solid var(--line-2);padding-bottom:3px;transition:border-color 200ms ease-out" style-hover="border-bottom-color:var(--accent)">Treasury <span style="font-size:11px;color:var(--muted)">&#8599;</span></a>
+          <div style="color:var(--muted);font-size:13.5px;line-height:1.55">Multi-sig fund release. One admin proposes, the second countersigns or vetoes, and only then can the recipient execute.</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;line-height:1.7;letter-spacing:0.06em;color:var(--muted);opacity:0.75">ReleaseProposal &rarr; TreasuryRelease</div>
+        </div>
+        <div style="padding:28px 22px 0;border-left:1px solid var(--line);display:flex;flex-direction:column;gap:10px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent)">Full-stack</div>
+          <a href="https://github.com/chinedumsunday/canton-loyalty" target="_blank" rel="noopener" style="font-size:15px;font-weight:700;letter-spacing:-0.01em;color:var(--fg);display:inline-flex;gap:6px;align-items:baseline;width:fit-content;border-bottom:1px solid var(--line-2);padding-bottom:3px;transition:border-color 200ms ease-out" style-hover="border-bottom-color:var(--accent)">Loyalty <span style="font-size:11px;color:var(--muted)">&#8599;</span></a>
+          <div style="color:var(--muted);font-size:13.5px;line-height:1.55">Airline points programme. The balance is contract state, not a database row &mdash; over-redeeming fails the transaction.</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;line-height:1.7;letter-spacing:0.06em;color:var(--muted);opacity:0.75">CLPApplication &rarr; CLPAccount</div>
+        </div>
+        <div style="padding:28px 22px 0;border-left:1px solid var(--line);display:flex;flex-direction:column;gap:10px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted)">DAML model</div>
+          <a href="https://github.com/chinedumsunday/daml-lessons" target="_blank" rel="noopener" style="font-size:15px;font-weight:700;letter-spacing:-0.01em;color:var(--fg);display:inline-flex;gap:6px;align-items:baseline;width:fit-content;border-bottom:1px solid var(--line-2);padding-bottom:3px;transition:border-color 200ms ease-out" style-hover="border-bottom-color:var(--accent)">Lending <span style="font-size:11px;color:var(--muted)">&#8599;</span></a>
+          <div style="color:var(--muted);font-size:13.5px;line-height:1.55">Borrower requests, lender approves with a due date. The agreement needs both signatures; only the borrower can repay it.</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;line-height:1.7;letter-spacing:0.06em;color:var(--muted);opacity:0.75">LoanRequest &rarr; LoanAgreement</div>
+        </div>
+        <div style="padding:28px 0 0 22px;border-left:1px solid var(--line);display:flex;flex-direction:column;gap:10px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted)">DAML model</div>
+          <a href="https://github.com/chinedumsunday/daml-lessons" target="_blank" rel="noopener" style="font-size:15px;font-weight:700;letter-spacing:-0.01em;color:var(--fg);display:inline-flex;gap:6px;align-items:baseline;width:fit-content;border-bottom:1px solid var(--line-2);padding-bottom:3px;transition:border-color 200ms ease-out" style-hover="border-bottom-color:var(--accent)">Onboarding <span style="font-size:11px;color:var(--muted)">&#8599;</span></a>
+          <div style="color:var(--muted);font-size:13.5px;line-height:1.55">Applicant submits, admin approves and allocates a wallet. The same shape as onboarding in live Canton ecosystem apps.</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;line-height:1.7;letter-spacing:0.06em;color:var(--muted);opacity:0.75">UserApplication &rarr; ApprovedUser &rarr; UserWallet</div>
+        </div>
+      </div>
+    </article>
+
+    <div style="margin-top:56px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,max(300px,45%)),1fr))">
       <div data-reveal="1" style="padding:0 32px 34px 0;display:flex;flex-direction:column;gap:12px">
         <div style="font-size:20px;font-weight:700;letter-spacing:-0.02em">Goody&rsquo;s</div>
         <div style="color:var(--muted);font-size:15px;line-height:1.55">Surprise call service &mdash; Paystack checkout into a WhatsApp delivery flow.</div>
@@ -466,14 +535,6 @@
         </div>
       </div>
       <div data-reveal="1" style="padding:34px 32px 34px;border-top:1px solid var(--line);border-left:1px solid var(--line);display:flex;flex-direction:column;gap:12px">
-        <div style="font-size:20px;font-weight:700;letter-spacing:-0.02em">Canton / DAML</div>
-        <div style="color:var(--muted);font-size:15px;line-height:1.55">Five full-stack applications on Canton LocalNet &mdash; marketplace, lending, treasury, loyalty, compliance.</div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:var(--muted);text-transform:uppercase">
-          <span style="border:1px solid var(--line-2);padding:5px 9px">DAML</span>
-          <span style="border:1px solid var(--line-2);padding:5px 9px">React</span>
-        </div>
-      </div>
-      <div data-reveal="1" style="grid-column:1/-1;padding:34px 32px 0 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:12px">
         <div style="font-size:20px;font-weight:700;letter-spacing:-0.02em">Letters</div>
         <div style="color:var(--muted);font-size:15px;line-height:1.55">Encrypted private journal, written for one reader only.</div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:var(--muted);text-transform:uppercase">
