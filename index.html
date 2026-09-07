@@ -26,7 +26,7 @@
     --nav-bg: rgba(15,13,12,0.78); --menu-bg: rgba(15,13,12,0.96);
     --dag-idle: #5A4A44; --dag-edge: #3A2A25; --dag-edge-live: #8A7060;
     --dag-amber: #E5A94B; --dag-green: #BDF26D; --dag-green-fill: #3B4A22;
-    --dag-red: #C2503A; --dag-red-fill: #2A100C;
+    --dag-red: #C2503A; --dag-red-fill: #2A100C; --dag-amber-fill: #4A3617;
     --surface-base: #2A2622; --surface-peak: #BDF26D;
   }
   @media (prefers-color-scheme: light) {
@@ -42,7 +42,7 @@
       --nav-bg: rgba(245,243,239,0.78); --menu-bg: rgba(245,243,239,0.96);
       --dag-idle: #B3A69E; --dag-edge: #D8CEC7; --dag-edge-live: #9C8375;
       --dag-amber: #B87A16; --dag-green: #4F6B18; --dag-green-fill: #D9EDB0;
-      --dag-red: #A33520; --dag-red-fill: #F3D6CF;
+      --dag-red: #A33520; --dag-red-fill: #F3D6CF; --dag-amber-fill: #F0DFBB;
       --surface-base: #D9D2C8; --surface-peak: #6FA01C;
     }
   }
@@ -58,7 +58,7 @@
     --nav-bg: rgba(245,243,239,0.78); --menu-bg: rgba(245,243,239,0.96);
     --dag-idle: #B3A69E; --dag-edge: #D8CEC7; --dag-edge-live: #9C8375;
     --dag-amber: #B87A16; --dag-green: #4F6B18; --dag-green-fill: #D9EDB0;
-    --dag-red: #A33520; --dag-red-fill: #F3D6CF;
+    --dag-red: #A33520; --dag-red-fill: #F3D6CF; --dag-amber-fill: #F0DFBB;
     --surface-base: #D9D2C8; --surface-peak: #6FA01C;
   }
   html, body { background: var(--bg); }
@@ -113,6 +113,7 @@
   @keyframes heroLine { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
   @keyframes nodePulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
   @keyframes noteIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes cellPulse { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     [data-hero] { animation: none !important; opacity: 1 !important; transform: none !important; }
@@ -168,69 +169,9 @@
     <div style="position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;opacity:0.14">
       <svg ref="{{ heroSurface }}" viewBox="-90 -55 180 110" preserveAspectRatio="xMidYMid slice" style="position:absolute;left:-50%;right:-50%;top:-35%;bottom:-35%;width:200%;height:170%;display:block" aria-hidden="true"></svg>
     </div>
-    <div style="position:relative;height:{{ dagH }};flex:0 0 auto" ref="{{ dagWrap }}">
-      <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
-        <svg viewBox="0 0 1200 320" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;display:block;overflow:visible">
-          <g fill="none" stroke="var(--dag-edge)" stroke-width="1.2" opacity="0.5">
-            <path data-edge="0" d="M120,90 C255,90 255,60 390,60" />
-            <path data-edge="1" d="M120,90 C255,90 255,145 390,145" />
-            <path data-edge="2" d="M120,200 C255,200 255,145 390,145" />
-            <path data-edge="3" d="M120,200 C255,200 255,230 390,230" />
-            <path data-edge="4" d="M390,60 C525,60 525,100 660,100" />
-            <path data-edge="5" d="M390,145 C525,145 525,100 660,100" />
-            <path data-edge="6" d="M390,145 C525,145 525,200 660,200" />
-            <path data-edge="7" d="M390,230 C525,230 525,200 660,200" />
-            <path data-edge="8" d="M660,100 C780,100 780,100 900,100" />
-            <path data-edge="9" d="M660,200 C780,200 780,200 900,200" />
-            <path data-edge="10" d="M900,100 C995,100 995,150 1090,150" />
-            <path data-edge="11" d="M900,200 C995,200 995,150 1090,150" />
-          </g>
-          <g fill="none" stroke="var(--dag-idle)" stroke-width="1.6" opacity="0.55">
-            <circle data-node="0" data-stage="EXTRACT" cx="120" cy="90" r="10" style="cursor:default;transition:transform 200ms ease-out" />
-            <circle data-node="1" data-stage="EXTRACT" cx="120" cy="200" r="10" style="cursor:default;transition:transform 200ms ease-out" />
-            <circle data-node="2" data-stage="STAGE" cx="390" cy="60" r="10" style="cursor:default;transition:transform 200ms ease-out" />
-            <circle data-node="3" data-stage="STAGE" cx="390" cy="145" r="10" style="cursor:default;transition:transform 200ms ease-out" />
-            <circle data-node="4" data-stage="STAGE" cx="390" cy="230" r="10" style="cursor:default;transition:transform 200ms ease-out" />
-            <circle data-node="5" data-stage="TRANSFORM" cx="660" cy="100" r="10" style="cursor:default;transition:transform 200ms ease-out" />
-            <circle data-node="6" data-stage="TRANSFORM" cx="660" cy="200" r="10" style="cursor:default;transition:transform 200ms ease-out" />
-            <circle data-node="7" data-stage="TEST" cx="900" cy="100" r="10" style="cursor:default;transition:transform 200ms ease-out" />
-            <circle data-node="8" data-stage="TEST" cx="900" cy="200" r="10" style="cursor:default;transition:transform 200ms ease-out" />
-            <circle data-node="9" data-stage="LOAD" cx="1090" cy="150" r="10" style="cursor:default;transition:transform 200ms ease-out" />
-          </g>
-          <g fill="var(--muted)" font-family="JetBrains Mono, monospace" font-size="16" letter-spacing="2.2" text-anchor="middle">
-            <text x="120" y="300">EXTRACT</text>
-            <text x="390" y="300">STAGE</text>
-            <text x="660" y="300">TRANSFORM</text>
-            <text x="900" y="300">TEST</text>
-            <text x="1090" y="300">LOAD</text>
-          </g>
-        </svg>
-      </sc-if>
-      <sc-if value="{{ narrow }}" hint-placeholder-val="{{ false }}">
-        <svg viewBox="0 0 260 96" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;display:block">
-          <g fill="none" stroke="var(--dag-edge)" stroke-width="1.2" opacity="0.5">
-            <path data-edge="0" d="M20,30 L75,30" />
-            <path data-edge="1" d="M75,30 L130,30" />
-            <path data-edge="2" d="M130,30 L185,30" />
-            <path data-edge="3" d="M185,30 L240,30" />
-          </g>
-          <g fill="none" stroke="var(--dag-idle)" stroke-width="1.4" opacity="0.55">
-            <circle data-node="0" data-stage="EXTRACT" cx="20" cy="30" r="6" />
-            <circle data-node="1" data-stage="STAGE" cx="75" cy="30" r="6" />
-            <circle data-node="2" data-stage="TRANSFORM" cx="130" cy="30" r="6" />
-            <circle data-node="3" data-stage="TEST" cx="185" cy="30" r="6" />
-            <circle data-node="4" data-stage="LOAD" cx="240" cy="30" r="6" />
-          </g>
-          <g fill="var(--muted)" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="0.4" text-anchor="middle">
-            <text x="20" y="62">EXTRACT</text>
-            <text x="75" y="62">STAGE</text>
-            <text x="130" y="62">MODEL</text>
-            <text x="185" y="62">TEST</text>
-            <text x="240" y="62">LOAD</text>
-          </g>
-        </svg>
-      </sc-if>
-      <div ref="{{ tip }}" style="position:absolute;left:0;top:0;opacity:0;pointer-events:none;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--on-accent);background:var(--accent-fill);padding:4px 7px;white-space:nowrap;transition:opacity 160ms ease-out"></div>
+    <div style="position:relative;flex:0 0 auto" ref="{{ dagWrap }}">
+      <div ref="{{ gridWrap }}" style="position:relative"></div>
+      <div ref="{{ tip }}" style="position:absolute;left:0;top:0;opacity:0;pointer-events:none;z-index:5;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--on-accent);background:var(--accent-fill);padding:4px 7px;white-space:nowrap;transition:opacity 160ms ease-out"></div>
     </div>
 
     <div style="position:relative;z-index:2;display:flex;flex-direction:column;gap:{{ heroGap }};margin-top:{{ heroGap }}">
@@ -242,7 +183,8 @@
       <div data-hero="4" style="animation:heroLine 500ms ease-out 240ms both;display:flex;flex-wrap:wrap;gap:14px 32px;align-items:center;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.16em;text-transform:uppercase">
         <a data-wipe="1" href="#work" style="border-bottom:1px solid var(--line-3);padding-bottom:6px">See the work &darr;</a>
         <a data-wipe="1" href="#contact" style="color:var(--muted);padding-bottom:6px">Get in touch</a>
-        <button type="button" onClick="{{ rerun }}" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);background:none;border:1px solid var(--line-3);padding:9px 14px;cursor:pointer;transition:color 200ms ease-out,border-color 200ms ease-out" style-hover="color:var(--accent);border-color:var(--accent)">&#8635; Trigger the run</button>
+        <button type="button" onClick="{{ rerun }}" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);background:none;border:1px solid var(--line-3);padding:9px 14px;cursor:pointer;transition:color 200ms ease-out,border-color 200ms ease-out" style-hover="color:var(--accent);border-color:var(--accent)">&#8635; Trigger a run</button>
+        <span ref="{{ statRef }}" style="color:var(--muted);letter-spacing:0.16em"></span>
         <sc-if value="{{ runNote }}" hint-placeholder-val="{{ false }}">
           <span data-note="1" ref="{{ noteRef }}" style="animation:noteIn 240ms ease-out both;color:var(--accent);letter-spacing:0.16em"></span>
         </sc-if>
@@ -548,7 +490,18 @@
   <section data-screen-label="Interlude" style="position:relative;z-index:1;border-top:1px solid var(--line);padding:90px 5vw">
     <div data-reveal="1">
       <h2 style="margin:0;font-size:clamp(40px,7.4vw,132px);line-height:0.92;font-weight:900;letter-spacing:-0.045em;max-width:15ch">It ran at 3am.<br /><span style="color:var(--accent)">Nobody noticed.</span></h2>
-      <div style="margin-top:64px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:var(--muted)">03:14 WAT &nbsp;&middot;&nbsp; 24/24 tasks &nbsp;&middot;&nbsp; success &nbsp;&middot;&nbsp; that is the whole job</div>
+      <div style="margin-top:56px;max-width:920px;border:1px solid var(--line-2);background:var(--card)">
+        <div style="display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid var(--line-2);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted)">
+          <span style="display:flex;gap:4px">
+            <span style="width:7px;height:7px;border-radius:50%;background:var(--line-3)"></span>
+            <span style="width:7px;height:7px;border-radius:50%;background:var(--line-3)"></span>
+            <span style="width:7px;height:7px;border-radius:50%;background:var(--line-3)"></span>
+          </span>
+          <span>scheduler &middot; due_fx_elt &middot; 03:14 WAT</span>
+        </div>
+        <div ref="{{ logRef }}" style="height:min(40vh,208px);overflow:hidden;padding:11px 15px;font-family:'JetBrains Mono',monospace;font-size:11.5px;line-height:1.85;color:var(--muted)"></div>
+      </div>
+      <div style="margin-top:22px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:var(--muted)">that is the whole job</div>
     </div>
   </section>
 
@@ -654,9 +607,39 @@
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;runDag&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;DAG&quot;}}">
-const IDLE_STROKE = "var(--dag-idle)", IDLE_FILL = "none";
-const AMBER = "var(--dag-amber)", GREEN = "var(--dag-green)", GREEN_FILL = "var(--dag-green-fill)", RED = "var(--dag-red)";
-const EDGE_BASE = "var(--dag-edge)", EDGE_LIVE = "var(--dag-edge-live)";
+// The hero grid: one column per scheduled run, one row per task. Run states are
+// derived from the run's epoch hour so a resize redraws the same history rather
+// than reshuffling it.
+const TASKS = [
+  ["extract_transactions", 0.62], ["extract_fx_rates", 0.41],
+  ["stage_load", 0.55], ["dq_null_check", 0.22], ["dq_row_count", 0.31],
+  ["dbt_run", 1.28], ["merge_core", 0.42], ["publish_metabase", 0.16]
+];
+const CELL = {
+  ok:    ["var(--dag-green-fill)", "var(--dag-green)"],
+  retry: ["var(--dag-amber-fill)", "var(--dag-amber)"],
+  fail:  ["var(--dag-red-fill)", "var(--dag-red)"],
+  skip:  ["transparent", "var(--line-2)"],
+  queue: ["var(--wash)", "var(--line-2)"],
+  run:   ["transparent", "var(--dag-green)"]
+};
+const LOG = [
+  ["03:14:02", "id", "scheduler", "starting due_fx_elt run 03:00:00+01:00"],
+  ["03:14:02", "", "", "queuing 24 tasks \u00b7 pool default_pool (16 slots)"],
+  ["03:14:03", "ok", "extract_transactions", "SUCCESS in 0.62s \u00b7 4,181 rows \u2192 gs://raw/tx/"],
+  ["03:14:03", "ok", "extract_fx_rates", "SUCCESS in 0.41s \u00b7 38 corridors"],
+  ["03:14:04", "ok", "stage_load", "SUCCESS in 0.55s \u00b7 WRITE_TRUNCATE staging.transactions"],
+  ["03:14:04", "ok", "dq_null_check", "SUCCESS in 0.22s \u00b7 0 nulls in 6 required columns"],
+  ["03:14:05", "ok", "dq_row_count", "SUCCESS in 0.31s \u00b7 delta +4,181 within tolerance"],
+  ["03:14:05", "er", "dbt_run", "FAILED \u00b7 attempt 1/4 \u00b7 BigQuery 503 backendError"],
+  ["03:14:05", "wr", "dbt_run", "retrying in 5s \u00b7 retries remaining 3"],
+  ["03:14:11", "ok", "dbt_run", "SUCCESS in 1.28s \u00b7 14 models \u00b7 0 errors"],
+  ["03:14:12", "ok", "merge_core", "SUCCESS in 0.42s \u00b7 MERGE 4,181 matched 0 inserted"],
+  ["03:14:12", "ok", "publish_metabase", "SUCCESS in 0.16s \u00b7 cache invalidated"],
+  ["03:14:12", "id", "scheduler", "run SUCCESS \u00b7 24/24 tasks \u00b7 1 retry \u00b7 3.42s"],
+  ["03:14:12", "", "", "next run 04:00:00+01:00 \u00b7 nobody was watching"]
+];
+const LOGC = { ok: "var(--dag-green)", wr: "var(--dag-amber)", er: "var(--dag-red)", id: "var(--fg)" };
 
 class Component extends DCLogic {
   state = { wide: true, narrow: false, menuOpen: false, runNote: "" };
@@ -666,6 +649,9 @@ class Component extends DCLogic {
     this.dagWrap = React.createRef();
     this.progress = React.createRef();
     this.tip = React.createRef();
+    this.gridWrap = React.createRef();
+    this.statRef = React.createRef();
+    this.logRef = React.createRef();
     this.clockWide = React.createRef();
     this.clockNarrow = React.createRef();
     this.noteRef = React.createRef();
@@ -677,6 +663,10 @@ class Component extends DCLogic {
     this.heroSurface = React.createRef();
     this.runCount = 0;
     this.pending = [];
+    this.logTimers = [];
+    this.runs = [];
+    this.gridCols = 0;
+    this.gridT0 = Date.now();
   }
 
   get reduced() {
@@ -707,13 +697,15 @@ class Component extends DCLogic {
       metricCols: n ? "repeat(2,minmax(0,1fr))" : "repeat(4,minmax(0,1fr))",
       proofCols: n ? "minmax(0,1fr)" : "minmax(0,1.4fr) minmax(0,1fr)",
       aboutCols: n ? "minmax(0,1fr)" : "minmax(0,0.8fr) minmax(0,1.7fr)",
-      dagH: n ? "120px" : "min(45%,300px)",
       heroH: n ? "auto" : "82svh",
       heroPadB: n ? "56px" : "72px",
       heroGap: n ? "40px" : "64px",
       dagWrap: this.dagWrap,
       progress: this.progress,
       tip: this.tip,
+      gridWrap: this.gridWrap,
+      statRef: this.statRef,
+      logRef: this.logRef,
       clockWide: this.clockWide,
       clockNarrow: this.clockNarrow,
       noteRef: this.noteRef,
@@ -722,7 +714,7 @@ class Component extends DCLogic {
       surfaceNews: this.surfaceNews,
       surfaceTel: this.surfaceTel,
       heroSurface: this.heroSurface,
-      rerun: () => this.runDag(),
+      rerun: () => this.newRun(),
       toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen })),
       toggleTheme: () => this.toggleTheme()
     };
@@ -741,7 +733,9 @@ class Component extends DCLogic {
     this.counters();
     this.schematics();
     this.cardHover();
-    this.nodeHover();
+    this.wmText = this.watermark();
+    this.buildGrid();
+    this.buildLog();
     this.buildSurface(this.surface, { period: 20000 });
     this.buildSurface(this.surfaceNews, {
       period: 18000, phase: 1.1, cols: 20, rows: 14,
@@ -763,8 +757,15 @@ class Component extends DCLogic {
       period: 90000, cols: 34, rows: 20, height: 62, weight: "0.35",
       base: "var(--surface-base)", peak: "var(--surface-base)", opacity: 1
     });
-    if (this.reduced) this.settleDag();
-    else this.pending.push(setTimeout(() => this.runDag(), 700));
+    if (window.ResizeObserver && this.gridWrap.current) {
+      let rt = null;
+      this.gridRO = new ResizeObserver(() => {
+        clearTimeout(rt);
+        rt = setTimeout(() => this.buildGrid(), 140);
+      });
+      this.gridRO.observe(this.gridWrap.current);
+    }
+    if (!this.reduced) this.pending.push(setTimeout(() => this.animateLatest(), 700));
   }
 
   componentDidUpdate() {
@@ -776,7 +777,9 @@ class Component extends DCLogic {
   componentWillUnmount() {
     clearInterval(this.timer);
     if (this.mq) this.mq.removeEventListener("change", this.syncMq);
-    [this.io, this.cio, this.sio].forEach(o => o && o.disconnect());
+    [this.io, this.cio, this.sio, this.logIO].forEach(o => o && o.disconnect());
+    if (this.gridRO) this.gridRO.disconnect();
+    this.logTimers.forEach(clearTimeout);
     window.removeEventListener("scroll", this.onScroll);
     window.removeEventListener("pointermove", this.onSurfaceMove);
     (this.surfaces || []).forEach(s => s.raf && cancelAnimationFrame(s.raf));
@@ -929,25 +932,261 @@ class Component extends DCLogic {
     });
   }
 
-  nodeHover() {
-    const root = this.dagWrap && this.dagWrap.current;
-    const tip = this.tip && this.tip.current;
-    if (!root || !tip) return;
-    root.querySelectorAll("[data-node]").forEach(node => {
-      node.addEventListener("mouseenter", () => {
-        const nb = node.getBoundingClientRect(), rb = root.getBoundingClientRect();
-        tip.textContent = node.getAttribute("data-stage") || "";
-        tip.style.left = (nb.left - rb.left + nb.width / 2) + "px";
-        tip.style.top = (nb.top - rb.top - 26) + "px";
-        tip.style.transform = "translateX(-50%)";
-        tip.style.opacity = "1";
-        if (!this.reduced) node.style.transform = "translateY(-3px)";
+  // ---- hero: run-history grid ----------------------------------------------
+  // One column per scheduled run, one row per task. A run's states are derived
+  // from its epoch hour, so a resize redraws the same history instead of
+  // reshuffling it.
+
+  rnd(a, b) {
+    const x = Math.sin(a * 12.9898 + b * 78.233) * 43758.5453;
+    return x - Math.floor(x);
+  }
+
+  watHour(d) {
+    return Number(new Intl.DateTimeFormat("en-GB", {
+      timeZone: "Africa/Lagos", hour: "2-digit", hour12: false
+    }).format(d));
+  }
+
+  runStates(key) {
+    const n = TASKS.length, roll = this.rnd(key, 99);
+    const failing = roll < 0.016, retrying = !failing && roll < 0.13;
+    const hit = Math.floor(this.rnd(key, 7) * n), out = [];
+    for (let r = 0; r < n; r++) {
+      if (failing && r === hit) out.push("fail");
+      else if (failing && r > hit) out.push("skip");
+      else if (retrying && r === hit) out.push("retry");
+      else out.push("ok");
+    }
+    return out;
+  }
+
+  buildRuns(cols) {
+    const runs = [];
+    for (let c = 0; c < cols; c++) {
+      const at = new Date(this.gridT0 - (cols - 1 - c) * 3600000);
+      const key = Math.floor(at.getTime() / 3600000);
+      runs.push({ at, key, states: this.runStates(key) });
+    }
+    return runs;
+  }
+
+  buildGrid() {
+    const wrap = this.gridWrap && this.gridWrap.current;
+    if (!wrap) return;
+    const narrow = this.state.narrow;
+    const gap = narrow ? 3 : 4, cell = narrow ? 12 : 18, pitch = cell + gap;
+    const gutter = narrow ? 0 : 176, axis = 16;
+    const w = wrap.clientWidth || 1100;
+    const cols = Math.max(10, Math.min(56, Math.floor((w - gutter - 6) / pitch)));
+    if (cols === this.gridCols && narrow === this.gridNarrow && this.cellEls) return;
+    this.gridCols = cols;
+    this.gridNarrow = narrow;
+    this.runs = this.buildRuns(cols);
+
+    const mono = "font-family:'JetBrains Mono',monospace";
+    let h = '<div style="display:flex;gap:' + (narrow ? 8 : 14) + 'px;align-items:flex-start">';
+    if (!narrow) {
+      h += '<div style="flex:0 0 ' + gutter + 'px;display:flex;flex-direction:column;gap:' + gap +
+           'px;padding-top:' + (axis + gap) + 'px">';
+      TASKS.forEach(t => {
+        h += '<div style="height:' + cell + 'px;line-height:' + cell + 'px;' + mono +
+             ';font-size:10.5px;color:var(--muted);text-align:right;white-space:nowrap;' +
+             'overflow:hidden;text-overflow:ellipsis">' + t[0] + '</div>';
       });
-      node.addEventListener("mouseleave", () => {
-        tip.style.opacity = "0";
-        node.style.transform = "none";
-      });
+      h += '</div>';
+    }
+    h += '<div style="flex:1 1 auto;min-width:0">';
+    h += '<div style="display:flex;gap:' + gap + 'px;height:' + axis +
+         'px;align-items:flex-end;margin-bottom:' + gap + 'px">';
+    this.runs.forEach((r, c) => {
+      const hr = this.watHour(r.at), night = hr === 3;
+      const label = night ? "☾" : (c % 8 === 0 ? ("0" + hr).slice(-2) : "");
+      h += '<div style="flex:0 0 ' + cell + 'px;width:' + cell + 'px;' + mono + ';font-size:' +
+           (night ? 11 : 8) + 'px;line-height:1;text-align:center;color:' +
+           (night ? "var(--accent)" : "var(--muted)") + '">' + label + '</div>';
     });
+    h += '</div>';
+    h += '<div style="display:flex;flex-direction:column;gap:' + gap + 'px">';
+    TASKS.forEach((t, r) => {
+      h += '<div style="display:flex;gap:' + gap + 'px">';
+      this.runs.forEach((run, c) => {
+        h += '<span data-cell="' + r + ',' + c + '" style="flex:0 0 ' + cell + 'px;width:' + cell +
+             'px;height:' + cell + 'px;border-radius:2px;box-sizing:border-box;cursor:pointer;' +
+             'transition:transform 120ms ease-out"></span>';
+      });
+      h += '</div>';
+    });
+    h += '</div></div></div>';
+    h += '<div style="' + mono + ';font-size:9px;letter-spacing:0.14em;text-transform:uppercase;' +
+         'color:var(--muted);margin-top:14px">' + cols + ' runs &middot; 8 of 24 tasks &middot; hourly' +
+         ' &middot; ☾ marks the 3am run &middot; synthetic history</div>';
+    wrap.innerHTML = h;
+
+    this.cellEls = Array.from(wrap.querySelectorAll("[data-cell]"));
+    this.renderCells();
+    this.bindGrid(wrap);
+    this.paintStat();
+  }
+
+  renderCells() {
+    if (!this.cellEls) return;
+    const cols = this.gridCols;
+    this.cellEls.forEach((el, i) => {
+      const r = Math.floor(i / cols), c = i % cols;
+      const run = this.runs[c];
+      const st = run ? run.states[r] : "queue";
+      const co = CELL[st] || CELL.queue;
+      el.style.background = co[0];
+      el.style.border = "1px solid " + co[1];
+      el.style.animation = (st === "run" && !this.reduced) ? "cellPulse 900ms ease-in-out infinite" : "none";
+    });
+  }
+
+  cellTip(el, on) {
+    const tip = this.tip && this.tip.current;
+    if (!tip || !el) return;
+    if (!on) { tip.style.opacity = "0"; el.style.transform = "none"; return; }
+    const idx = el.getAttribute("data-cell").split(",");
+    const r = Number(idx[0]), run = this.runs[Number(idx[1])];
+    if (!run) return;
+    const st = run.states[r];
+    const when = new Intl.DateTimeFormat("en-GB", {
+      timeZone: "Africa/Lagos", day: "2-digit", month: "short",
+      hour: "2-digit", minute: "2-digit", hour12: false
+    }).format(run.at);
+    const detail = st === "ok" ? TASKS[r][1].toFixed(2) + "s success"
+      : st === "retry" ? "retry 1 → success"
+      : st === "fail" ? "failed · 503 backendError"
+      : st === "skip" ? "upstream failed · skipped"
+      : st === "run" ? "running…" : "queued";
+    tip.textContent = TASKS[r][0] + "  ·  " + when + "  ·  " + detail;
+    const b = el.getBoundingClientRect(), p = this.dagWrap.current.getBoundingClientRect();
+    tip.style.left = Math.round(b.left - p.left + b.width / 2) + "px";
+    tip.style.top = Math.round(b.top - p.top - 26) + "px";
+    tip.style.transform = "translateX(-50%)";
+    tip.style.opacity = "1";
+    if (!this.reduced) el.style.transform = "scale(1.35)";
+  }
+
+  bindGrid(wrap) {
+    if (this.gridBound) return;
+    this.gridBound = true;
+    const find = e => e.target && e.target.closest && e.target.closest("[data-cell]");
+    wrap.addEventListener("mouseover", e => { const el = find(e); if (el) this.cellTip(el, true); });
+    wrap.addEventListener("mouseout", e => { const el = find(e); if (el && el !== this.pinned) this.cellTip(el, false); });
+    // Click pins a cell so the detail is reachable on touch, where there is no hover.
+    wrap.addEventListener("click", e => {
+      const el = find(e);
+      if (!el) return;
+      if (this.pinned && this.pinned !== el) this.cellTip(this.pinned, false);
+      if (this.pinned === el) { this.cellTip(el, false); this.pinned = null; }
+      else { this.cellTip(el, true); this.pinned = el; }
+    });
+  }
+
+  paintStat() {
+    const el = this.statRef && this.statRef.current;
+    if (!el) return;
+    let streak = 0;
+    for (let i = this.runs.length - 1; i >= 0; i--) {
+      if (this.runs[i].states.indexOf("fail") >= 0) break;
+      streak++;
+    }
+    const bits = [streak + " green in a row"];
+    // watermark() is read-once: it rewrites the stored stamp, so it is resolved
+    // on mount and cached. Recomputing here would compare now against now.
+    if (this.wmText) bits.push(this.wmText);
+    el.textContent = bits.join("  ·  ");
+  }
+
+  // Runs are hourly, so hours elapsed is runs elapsed. Nothing leaves the browser.
+  watermark() {
+    let last = null;
+    try {
+      last = window.localStorage.getItem("cs.lastSeen");
+      window.localStorage.setItem("cs.lastSeen", String(Date.now()));
+    } catch (e) { return ""; }
+    if (!last) return "";
+    const runs = Math.floor((Date.now() - Number(last)) / 3600000);
+    if (!isFinite(runs) || runs < 1) return "";
+    return (runs > 999 ? "999+" : runs) + (runs === 1 ? " run" : " runs") + " since your last visit";
+  }
+
+  newRun() {
+    if (this.props.runDag === false) return;
+    this.pending.forEach(clearTimeout);
+    this.pending = [];
+    this.runCount += 1;
+    this.gridT0 += 3600000;
+    this.runs = this.buildRuns(this.gridCols);
+    this.animateLatest();
+  }
+
+  animateLatest() {
+    const run = this.runs[this.runs.length - 1];
+    if (!run || !this.cellEls) return;
+    const settled = run.states.slice();
+    if (this.reduced) { this.renderCells(); this.noteRun(settled); return; }
+    run.states = TASKS.map(() => "queue");
+    this.renderCells();
+    TASKS.forEach((t, r) => {
+      this.pending.push(setTimeout(() => { run.states[r] = "run"; this.renderCells(); }, r * 170));
+      this.pending.push(setTimeout(() => { run.states[r] = settled[r]; this.renderCells(); }, r * 170 + 300));
+    });
+    this.pending.push(setTimeout(() => {
+      this.paintStat();
+      this.noteRun(settled);
+    }, TASKS.length * 170 + 340));
+  }
+
+  noteRun(states) {
+    const note = states.indexOf("fail") >= 0 ? "dbt_run failed · retrying in 5s"
+      : states.indexOf("retry") >= 0 ? "success · 1 retry · 3.42s"
+      : "success · 3.42s";
+    this.setState({ runNote: note });
+    this.pending.push(setTimeout(() => this.setState({ runNote: "" }), 3400));
+  }
+
+  // ---- interlude: scheduler tail -------------------------------------------
+
+  buildLog() {
+    const el = this.logRef && this.logRef.current;
+    if (!el) return;
+    if (this.reduced) { LOG.forEach((_, i) => this.logLine(i)); return; }
+    this.logIO = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) this.startLog(); else this.stopLog(); });
+    }, { threshold: 0.25 });
+    this.logIO.observe(el);
+  }
+
+  logLine(i) {
+    const el = this.logRef && this.logRef.current;
+    if (!el || !LOG[i]) return;
+    const L = LOG[i], row = document.createElement("div");
+    row.style.whiteSpace = "pre";
+    let html = '<span style="opacity:0.55">' + L[0] + "</span>  ";
+    if (L[2]) html += '<span style="color:' + (LOGC[L[1]] || "var(--fg)") + '">' + L[2] + "</span>  ";
+    html += "<span" + (LOGC[L[1]] ? ' style="color:' + LOGC[L[1]] + '"' : "") + ">" + L[3] + "</span>";
+    row.innerHTML = html;
+    el.appendChild(row);
+    while (el.scrollHeight > el.clientHeight && el.firstChild) el.removeChild(el.firstChild);
+  }
+
+  startLog() {
+    if (this.logRunning) return;
+    this.logRunning = true;
+    const el = this.logRef && this.logRef.current;
+    if (el) el.innerHTML = "";
+    LOG.forEach((_, i) => this.logTimers.push(setTimeout(() => this.logLine(i), i * 470)));
+    this.logTimers.push(setTimeout(() => { this.logRunning = false; this.startLog(); },
+      LOG.length * 470 + 5200));
+  }
+
+  stopLog() {
+    this.logTimers.forEach(clearTimeout);
+    this.logTimers = [];
+    this.logRunning = false;
   }
 
   buildSurface(ref, opts) {
@@ -1039,102 +1278,6 @@ class Component extends DCLogic {
     state.raf = requestAnimationFrame(loop);
   }
 
-  dagParts() {
-    const root = this.dagWrap && this.dagWrap.current;
-    if (!root) return null;
-    const narrow = this.state.narrow;
-    return {
-      node: i => root.querySelector('[data-node="' + i + '"]'),
-      edge: i => root.querySelector('[data-edge="' + i + '"]'),
-      layers: narrow ? [[0], [1], [2], [3], [4]] : [[0, 1], [2, 3, 4], [5, 6], [7, 8], [9]],
-      incoming: narrow
-        ? { 1: [0], 2: [1], 3: [2], 4: [3] }
-        : { 2: [0], 3: [1, 2], 4: [3], 5: [4, 5], 6: [6, 7], 7: [8], 8: [9], 9: [10, 11] }
-    };
-  }
-
-  paint(c, mode) {
-    if (!c) return;
-    c.style.animation = "none";
-    if (mode === "idle") { c.style.stroke = IDLE_STROKE; c.style.fill = IDLE_FILL; }
-    if (mode === "amber") {
-      c.style.stroke = AMBER; c.style.fill = "none";
-      if (!this.reduced) c.style.animation = "nodePulse 400ms ease-in-out 1";
-    }
-    if (mode === "green") { c.style.stroke = GREEN; c.style.fill = GREEN_FILL; }
-    if (mode === "red") { c.style.stroke = RED; c.style.fill = "var(--dag-red-fill)"; }
-  }
-
-  resetDag() {
-    const p = this.dagParts();
-    if (!p) return;
-    this.pending.forEach(clearTimeout);
-    this.pending = [];
-    this.setState({ runNote: "" });
-    const root = this.dagWrap.current;
-    root.querySelectorAll("[data-node]").forEach(c => this.paint(c, "idle"));
-    root.querySelectorAll("[data-edge]").forEach(e => { e.style.transition = "stroke 300ms ease-out"; e.style.stroke = EDGE_BASE; });
-  }
-
-  settleDag() {
-    const p = this.dagParts();
-    if (!p) return;
-    const root = this.dagWrap.current;
-    root.querySelectorAll("[data-node]").forEach(c => this.paint(c, "green"));
-    root.querySelectorAll("[data-edge]").forEach(e => { e.style.stroke = EDGE_BASE; });
-  }
-
-  runDag() {
-    if (this.props.runDag === false) return;
-    const p = this.dagParts();
-    if (!p) return;
-    this.resetDag();
-    this.runCount += 1;
-    const failRun = this.runCount % 4 === 0;
-    const failNode = this.state.narrow ? 2 : 5;
-
-    if (this.reduced) {
-      this.settleDag();
-      this.setState({ runNote: failRun ? "24/24 tasks · success · 1 retry" : "24/24 tasks · success · 3.4s" });
-      this.pending.push(setTimeout(() => this.setState({ runNote: "" }), 2000));
-      return;
-    }
-
-    const step = 620, hold = 400;
-    const at = (ms, fn) => this.pending.push(setTimeout(fn, ms));
-    let extra = 0, retried = false;
-
-    p.layers.forEach((layer, li) => {
-      const base = li * step + extra;
-      layer.forEach(i => {
-        at(base, () => {
-          (p.incoming[i] || []).forEach(e => {
-            const edge = p.edge(e);
-            if (!edge) return;
-            edge.style.transition = "stroke 200ms ease-out";
-            edge.style.stroke = EDGE_LIVE;
-            at(hold + 300, () => { edge.style.stroke = EDGE_BASE; });
-          });
-          this.paint(p.node(i), "amber");
-        });
-        if (failRun && i === failNode) {
-          at(base + hold, () => this.paint(p.node(i), "red"));
-          at(base + hold + 800, () => this.paint(p.node(i), "amber"));
-          at(base + hold + 800 + hold, () => this.paint(p.node(i), "green"));
-          retried = true;
-        } else {
-          at(base + hold, () => this.paint(p.node(i), "green"));
-        }
-      });
-      if (failRun && layer.indexOf(failNode) > -1) extra += 800 + hold;
-    });
-
-    const total = p.layers.length * step + extra + hold;
-    at(total, () => {
-      this.setState({ runNote: retried ? "24/24 tasks · success · 1 retry" : "24/24 tasks · success · 3.4s" });
-      at(2000 + 240, () => this.setState({ runNote: "" }));
-    });
-  }
 }
 </script>
 </body>
