@@ -138,6 +138,7 @@
     <a href="#top" style="color:var(--fg)">Chinedum Sunday</a>
     <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
       <div style="display:flex;gap:28px">
+        <a data-wipe="1" href="#experience" style="color:var(--muted)">Experience</a>
         <a data-wipe="1" href="#work" style="color:var(--muted)">Work</a>
         <a data-wipe="1" href="#about" style="color:var(--muted)">About</a>
         <a data-wipe="1" href="#contact" style="color:var(--muted)">Contact</a>
@@ -157,6 +158,7 @@
   </nav>
   <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
     <div style="position:sticky;top:47px;z-index:19;display:flex;flex-direction:column;gap:18px;padding:22px 5vw;border-bottom:1px solid var(--line);background:var(--menu-bg);font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase">
+      <a href="#experience" onClick="{{ toggleMenu }}">Experience</a>
       <a href="#work" onClick="{{ toggleMenu }}">Work</a>
       <a href="#about" onClick="{{ toggleMenu }}">About</a>
       <a href="#contact" onClick="{{ toggleMenu }}">Contact</a>
@@ -211,10 +213,43 @@
     </div>
   </header>
 
-    <section data-screen-label="Proof" style="position:relative;z-index:1;border-top:1px solid var(--line);padding:90px 5vw">
+    <section id="experience" data-screen-label="Experience" style="position:relative;z-index:1;border-top:1px solid var(--line);padding:90px 5vw">
+    <div data-reveal="1">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;color:var(--muted);text-transform:uppercase">(01) &nbsp; Experience</div>
+      <h2 style="margin:24px 0 0;font-size:clamp(26px,3.2vw,44px);line-height:1.05;font-weight:800;letter-spacing:-0.028em;max-width:24ch">Still early.<br />Already in production.</h2>
+    </div>
+    <div data-stagger="80" style="margin-top:56px;display:flex;flex-direction:column;border-bottom:1px solid var(--line)">
+      <div data-reveal="1" style="display:grid;grid-template-columns:{{ expCols }};gap:8px 32px;border-top:1px solid var(--line);padding:30px 0">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);padding-top:5px">Now</div>
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <div style="font-size:19px;font-weight:700;letter-spacing:-0.016em">Lead News Editor <span style="color:var(--muted);font-weight:400">&middot; MyTradingLand</span></div>
+          <div style="color:var(--muted);font-size:15px;line-height:1.6;max-width:62ch">Run the market news desk for an FX and markets publication &mdash; editorial calls on market moves, published to deadline.</div>
+        </div>
+      </div>
+      <div data-reveal="1" style="display:grid;grid-template-columns:{{ expCols }};gap:8px 32px;border-top:1px solid var(--line);padding:30px 0">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);padding-top:5px">Now</div>
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <div style="font-size:19px;font-weight:700;letter-spacing:-0.016em">Community Moderator <span style="color:var(--muted);font-weight:400">&middot; Cantor8</span></div>
+          <div style="color:var(--muted);font-size:15px;line-height:1.6;max-width:62ch">Moderate the community for a Canton Network ecosystem project. Where the DAML work started.</div>
+        </div>
+      </div>
+      <div data-reveal="1" style="display:grid;grid-template-columns:{{ expCols }};gap:8px 32px;border-top:1px solid var(--line);padding:30px 0">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);padding-top:5px">2026</div>
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <div style="font-size:19px;font-weight:700;letter-spacing:-0.016em">Data Engineer <span style="color:var(--muted);font-weight:400">&middot; <a href="https://github.com/chinedumsunday/due-fx-analytics-platform" target="_blank" rel="noopener" style="color:var(--fg);border-bottom:1px solid var(--line-3);transition:border-color 200ms ease-out" style-hover="border-bottom-color:var(--accent)">Due FX</a></span></div>
+          <div style="color:var(--muted);font-size:15px;line-height:1.6;max-width:62ch">End-to-end GCP ELT platform for a Nigerian remittance startup &mdash; Airflow, dbt, BigQuery, Metabase. Idempotent loads, so a re-run is never a duplicate.</div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:26px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted)">
+      <a data-wipe="1" href="uploads/Chinedum_Sunday_Data_Engineer_CV.pdf" download="" style="color:var(--fg);border-bottom:1px solid var(--line-3);padding-bottom:5px">Full CV &darr;</a>
+    </div>
+  </section>
+
+  <section data-screen-label="Proof" style="position:relative;z-index:1;border-top:1px solid var(--line);padding:90px 5vw">
     <div style="display:grid;grid-template-columns:{{ proofCols }};gap:48px;align-items:center">
       <div data-reveal="1">
-        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;color:var(--muted);text-transform:uppercase">(01) &nbsp; Proof, not adjectives</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;color:var(--muted);text-transform:uppercase">(02) &nbsp; Proof, not adjectives</div>
         <h2 style="margin:24px 0 0;font-size:clamp(30px,4.4vw,64px);line-height:1.0;font-weight:800;letter-spacing:-0.032em;max-width:22ch">Most pipelines run.<br />Fewer are trusted.</h2>
       </div>
       <div data-reveal="1" style="display:flex;justify-content:center;align-items:center;height:280px;perspective:1100px;perspective-origin:50% 50%">
@@ -250,7 +285,7 @@
 
   <section id="work" data-screen-label="Selected work" style="position:relative;z-index:1;border-top:1px solid var(--line);padding:90px 5vw">
     <div data-reveal="1">
-      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;color:var(--muted);text-transform:uppercase">(02) &nbsp; Selected work</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;color:var(--muted);text-transform:uppercase">(03) &nbsp; Selected work</div>
       <h2 style="margin:24px 0 0;font-size:clamp(30px,4.4vw,64px);line-height:1.0;font-weight:800;letter-spacing:-0.032em;max-width:22ch">Anyone can move data.<br />The job is moving it on time.</h2>
     </div>
 
@@ -373,7 +408,7 @@
 
   <section data-screen-label="Side builds" style="position:relative;z-index:1;border-top:1px solid var(--line);padding:90px 5vw">
     <div data-reveal="1">
-      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;color:var(--muted);text-transform:uppercase">(03) &nbsp; Things I build anyway</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;color:var(--muted);text-transform:uppercase">(04) &nbsp; Things I build anyway</div>
       <h2 style="margin:24px 0 0;font-size:clamp(26px,3.2vw,44px);line-height:1.05;font-weight:800;letter-spacing:-0.028em;max-width:24ch">Dashboards are the easy part.</h2>
     </div>
 
@@ -501,7 +536,7 @@
 
   <section id="about" data-screen-label="About" style="position:relative;z-index:1;border-top:1px solid var(--line);padding:90px 5vw;overflow:hidden">
     <div data-reveal="1">
-      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;color:var(--muted);text-transform:uppercase">(04) &nbsp; About</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;color:var(--muted);text-transform:uppercase">(05) &nbsp; About</div>
       <h2 style="margin:24px 0 0;font-size:clamp(28px,3.4vw,48px);line-height:1.02;font-weight:800;letter-spacing:-0.032em;max-width:20ch">Statistics first.<br />Then the plumbing.</h2>
     </div>
     <pre style="position:absolute;top:180px;left:0;right:0;margin:0;padding:0 5vw;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7;color:var(--fg);opacity:0.07;pointer-events:none;white-space:pre;overflow:hidden;user-select:none">with DAG(
@@ -547,7 +582,7 @@
       <div data-reveal="1" style="display:flex;flex-direction:column;gap:28px">
         <p style="margin:0;color:var(--fg);font-size:17px;line-height:1.7;max-width:58ch">I came to data engineering from statistics, which is why I care less about the dashboard and more about whether the number behind it can be trusted at 3am. I build pipelines that are boring on purpose: idempotent, observable, and easy for the next person to read.</p>
         <p style="margin:0;color:var(--muted);font-size:17px;line-height:1.7;max-width:58ch">I&rsquo;m in Abuja and work with teams anywhere.</p>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;color:var(--fg);line-height:1.5">Currently: News Editor at MyTradingLand &middot; Community Moderator at Cantor8</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;color:var(--fg);line-height:1.5">Currently: Lead News Editor at MyTradingLand &middot; Community Moderator at Cantor8</div>
         <div style="display:flex;flex-direction:column;gap:14px;border-top:1px solid var(--line);padding-top:24px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;color:var(--muted);line-height:1.5">
           <div>B.Sc. Statistics &mdash; University of Nigeria, Nsukka</div>
           <div>Professional Diploma, Data Engineering &mdash; AltSchool Africa</div>
@@ -578,7 +613,7 @@
       </svg>
     </div>
     <div data-reveal="1" style="position:relative">
-      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;color:var(--muted);text-transform:uppercase">(05) &nbsp; Contact</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;color:var(--muted);text-transform:uppercase">(06) &nbsp; Contact</div>
       <h2 style="margin:24px 0 0;font-size:clamp(34px,6.4vw,104px);line-height:0.94;font-weight:900;letter-spacing:-0.045em;max-width:16ch">Got a pipeline that needs to be trusted?</h2>
       <div style="margin-top:64px;display:flex;flex-direction:column;gap:32px">
         <a href="mailto:chinedumsunday5@gmail.com" style="font-size:clamp(20px,2.6vw,38px);letter-spacing:-0.02em;color:var(--accent);width:fit-content;border-bottom:1px solid var(--line-2);padding-bottom:8px;transition:border-color 200ms ease-out" style-hover="border-bottom-color:var(--accent)">chinedumsunday5@gmail.com</a>
@@ -695,6 +730,7 @@ class Component extends DCLogic {
       heroPadB: n ? "56px" : "72px",
       heroGap: n ? "36px" : "52px",
       heroStack: n ? "22px" : "26px",
+      expCols: n ? "minmax(0,1fr)" : "132px minmax(0,1fr)",
       dagWrap: this.dagWrap,
       progress: this.progress,
       tip: this.tip,
